@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12 text-center">
+            <div class="main-menu-wrap">
+                <!-- logo -->
+                <div class="site-logo">
+                    <a routerLink="/">
+                        <img src="assets/img/logo.png" alt="Logo">
+                    </a>
+                </div>
+                <!-- logo -->
+
+                <!-- menu start -->
+                <nav class="main-menu">
+                    <ul>
+                        <li><a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page"
+                                [routerLinkActiveOptions]="{exact: true}">Trang chủ</a>
+                        </li>
+                        <li>
+                            <a class="" routerLink="/shop" routerLinkActive="active" ariaCurrentWhenActive="page">Cửa
+                                hàng</a>
+                        </li>
+                        <li><a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">Giới thiệu</a>
+                        </li>
+                        <li><a routerLink="/contact" routerLinkActive="active" ariaCurrentWhenActive="page">Liên hệ</a>
+                        </li>
+                        <li>
+                            <div class="header-icons">
+                                <a class="shopping-cart" routerLink="cart">
+                                    <i class="fas fa-shopping-cart cart-icon">
+                                        <span class="cart-quantity">{{cartQuantity}}</span>
+                                    </i></a>
+                                <a class="mobile-hide search-icon" (click)="showSearchArea()"><i
+                                        class="fas fa-search"></i></a>
+
+                                <!-- Search Area -->
+                                <div *ngIf="isSearchArea" class="search-area">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span class="close-btn" (click)="showSearchArea()"><i
+                                                        class="fas fa-window-close"></i></span>
+                                                <div class="search-bar mt-5">
+                                                    <div class="search-bar-tablecell">
+                                                        <h3>Tìm kiếm sản phẩm:</h3>
+                                                        <input type="text" placeholder="Nội dung tìm kiếm"
+                                                            (input)="onChangeSearch($event)">
+                                                        <button type="submit">Tìm kiếm <i
+                                                                class="fas fa-search"></i></button>
+                                                    </div>
+                                                </div>
+                                                <ul class="search-list mt-5" *ngIf="isSearch">
+                                                    <h3 class="mb-4" style="color: white;">Danh sách tìm kiếm</h3>
+                                                    <li class="search-item" *ngFor="let item of productsFilter">
+                                                        <a routerLink="/details/{{item._id}}" (click)="showSearchArea()"
+                                                            class="d-flex justufy-content-between align-items-center">
+                                                            <div class="item-img">
+                                                                <img src="{{item.image}}" alt="">
+                                                            </div>
+                                                            <div class="item-body ml-4">
+                                                                <span>{{item.name}}</span>
+                                                                <span>{{item.price | currency:'VND'}}</span>
+                                                                <span
+                                                                    class="badge badge-primary">{{item.categories}}</span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="user d-inline-block">
+                                    <a class="mobile-hide user-dropdown" routerLink="/authentication"><i
+                                            class="fas fa-user"></i></a>
+                                    <ul *ngIf="userData" class="user-menu">
+                                        <p class="menu-title text-center">Thông tin tài khoản</p>
+                                        <p class="menu-item">Tên TK: <span class="ml-2">{{userData.fullname |
+                                                titlecase}}</span></p>
+                                        <p class="menu-item">Vai trò: <span
+                                                class="badge badge-primary ml-2">{{userData.role}}</span></p>
+                                        <div class="menu-btns mt-3">
+                                            <a *ngIf="userData.role === 'Quản trị viên'" routerLink="/manager"
+                                                class="btn btn-success btn-block admin-btn">Trang quản
+                                                trị</a>
+                                            <a class="btn btn-primary btn-lg btn-block btn-history"
+                                                *ngIf="userData.role != 'Quản trị viên'" routerLink="/settings">Cài đặt
+                                                tài khoản</a>
+                                            <button class="btn btn-secondary btn-lg btn-block" (click)="logout()">Đăng
+                                                xuất</button>
+                                        </div>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <a class="mobile-show search-bar-icon" routerLink="#"><i class="fas fa-search"></i></a>
+                <div class="mobile-menu"></div>
+                <!-- menu end -->
+            </div>
+        </div>
+    </div>
+</div>

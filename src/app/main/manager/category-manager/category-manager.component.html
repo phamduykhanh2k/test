@@ -1,0 +1,102 @@
+<div class="product-manager mt-3">
+    <div class="operation">
+        <p class="operation-title">Chức năng chính:</p>
+        <div class="operation-btns">
+            <button class="btn btn-primary px-4 py-2" (click)="formType = 'Create'">
+                <i class=" bi bi-person-plus-fill"></i>
+            </button>
+            <button class="btn btn-primary px-4 py-2 ml-3">
+                <i class="bi bi-funnel-fill"></i>
+            </button>
+        </div>
+        <div *ngIf="formType === 'Create'" class="add-area mt-4">
+            <form [formGroup]="categoryForm" (ngSubmit)="createCategory()">
+                <h2 class="text-center" style="font-size: 1.8rem;">Thêm danh mục</h2>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <label><strong>Tên danh mục:</strong> <span style="color: red;">*</span></label>
+                        <input class="w-100 p-2" type="text" name="name" formControlName="name" #myInput>
+                        <div *ngIf="categoryForm.controls['name'].errors && isError" class="error-msg">
+                            Tên danh mục phải từ 5 ký tự trở lên
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label><strong>Mô tả:</strong></label>
+                        <input class="w-100 p-2" type="text" name="name" id="" style="height: 100px;"
+                            formControlName="description">
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <button class="btn btn-success px-4 py-3 mx-4" type="submit">Thêm</button>
+                    <button class="btn btn-secondary px-4 py-3 mx-4" (click)="formType = ''">Đóng</button>
+                </div>
+            </form>
+        </div>
+        <!-- /*---------------------- Add Product --------------------------  */ -->
+        <div *ngIf="formType === 'Edit'" class="add-area mt-4">
+            <form [formGroup]="categoryForm" (ngSubmit)="updateCategory()">
+                <h2 class="text-center" style="font-size: 1.8rem;">Sửa danh mục</h2>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <label><strong>Mã danh mục:</strong> <span style="color: red;">*</span></label>
+                        <input class="w-100 p-2" type="text" name="id" formControlName="id" readonly
+                            style="color: #ccc;">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label><strong>Tên danh mục:</strong> <span style="color: red;">*</span></label>
+                        <input class="w-100 p-2" type="text" name="name" formControlName="name" #myInput>
+                        <div *ngIf="categoryForm.controls['name'].errors && isError" class="error-msg">
+                            Tên danh mục phải từ 5 ký tự trở lên
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label><strong>Mô tả:</strong></label>
+                        <input class="w-100 p-2" type="text" name="name" id="" style="height: 100px;"
+                            formControlName="description">
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <button class="btn btn-success px-4 py-3 mx-4" type="submit">Sửa</button>
+                    <button class="btn btn-secondary px-4 py-3 mx-4" (click)="formType = ''">Đóng</button>
+                </div>
+            </form>
+        </div>
+        <table class="table table-bordered mt-5 text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Mã danh mục</th>
+                    <th scope="col">Tên danh mục</th>
+                    <th scope="col" style="width: 500px;">Mô tả</th>
+                    <th scope="col">Hoạt động</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of categories | paginate: { itemsPerPage: 5, currentPage: page }">
+                    <th scope="row">{{item._id}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{item.description}}</td>
+                    <td>
+                        <button class="btn btn-warning" (click)="getCategory(item)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-danger ml-3" (click)="removeProduct(item)">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pagination justify-content-center">
+            <pagination-controls (pageChange)="page = $event" previousLabel="Sau"
+                nextLabel="Trước"></pagination-controls>
+        </div>
+    </div>

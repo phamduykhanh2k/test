@@ -1,0 +1,21 @@
+.my-pagination ::ng-deep .ngx-pagination a,
+.my-pagination ::ng-deep .ngx-pagination .current {
+    padding: 2px 15px;
+    border-radius: 9999px;
+}
+
+.my-pagination ::ng-deep .ngx-pagination li {
+    margin: 0 5px;
+}
+
+.my-pagination ::ng-deep .ngx-pagination span {
+    font-size: 1.4rem;
+}
+
+.background-btn-choosed {
+    background-color: orange;
+}
+
+.background-btn-choosed button {
+    color: #fff;
+}

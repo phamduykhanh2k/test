@@ -1,0 +1,75 @@
+<div class="account">
+    <div class="container">
+        <form action="" [formGroup]="userForm" (submit)="updateUser()">
+            <h2 class="setting-title text-center">Thông tin tài khoản</h2>
+            <div class="row align-items-center mt-5">
+                <div class="col-md-12 col-xl-3">
+                    <p class="account-item">Họ và tên</p>
+                </div>
+                <div class="col-md-12 col-xl-9">
+                    <input type="text" placeholder="Họ và tên của bạn" formControlName="fullname">
+                    <div *ngIf="userForm.controls['fullname'].errors && isCheckError">
+                        <span style="color: red;">Tên phải có độ dài từ 5 ký tự</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center mt-4">
+                <div class="col-md-12 col-xl-3">
+                    <p class="account-item">Email</p>
+                </div>
+                <div class="col-md-12 col-xl-9">
+                    <input type="email" placeholder="Email của bạn" formControlName="email">
+                    <div *ngIf="userForm.controls['email'].errors && isCheckError">
+                        <span style="color: red;">Email không hợp lệ</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center mt-4">
+                <div class="col-md-12 col-xl-3">
+                    <p class="account-item">Số điện thoại</p>
+                </div>
+                <div class="col-md-12 col-xl-9">
+                    <input type="tel" placeholder="Số điện thoại của bạn" formControlName="phone">
+
+                    <div *ngIf="userForm.controls['phone'].errors && isCheckError">
+                        <span style="color: red;">Số điện thoại phải từ 10 đến 15 ký tự</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center mt-4">
+                <div class="col-md-12 col-xl-3">
+                    <p class="account-item">Địa chỉ</p>
+                </div>
+                <div class="col-md-12 col-xl-9">
+                    <input type="text" placeholder="Địa chỉ của bạn" formControlName="address">
+                    <div *ngIf="userForm.controls['address'].errors && isCheckError">
+                        <span style="color: red;">Địa chỉ phải có độ dài từ 10 ký tự</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center mt-4">
+                <div class="col-md-12 col-xl-3">
+                    <p class="account-item">Giới tính</p>
+                </div>
+                <div class="col-md-12 col-xl-9">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio1"
+                            formControlName="gender" value="Nam">
+                        <label class="form-check-label" for="inlineRadio1">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio2"
+                            formControlName="gender" value="Nữ">
+                        <label class="form-check-label" for="inlineRadio2">Nữ</label>
+                    </div>
+                    <div *ngIf="userForm.controls['gender'].errors && isCheckError">
+                        <span style="color: red;">Vui lòng chọn giới tính</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center my-5">
+                <button type="submit" class="btn btn-primary account-btn">Cập nhật tài khoản</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="container-fluid mt-150">
+    <h1 class="text-center manager-title">TRANG QUẢN TRỊ WEBSITE</h1>
+    <nav class="nav-manager text-center">
+        <a routerLink="/manager/users" routerLinkActive="active nav-item" ariaCurrentWhenActive="page"
+            class="d-inline-block">Tài
+            khoản</a>
+        <span> | </span>
+        <a routerLink="/manager/products" routerLinkActive="active nav-item" ariaCurrentWhenActive="page"
+            [routerLinkActiveOptions]="{exact: true}" class="d-inline-block">Sản phẩm</a>
+        <span> | </span>
+        <a routerLink="/manager/categories" routerLinkActive="active nav-item" ariaCurrentWhenActive="page"
+            [routerLinkActiveOptions]="{exact: true}" class="d-inline-block">Danh mục sản phẩm</a>
+        <span> | </span>
+        <a routerLink="/manager/orders" routerLinkActive="active nav-item" ariaCurrentWhenActive="page"
+            class="d-inline-block">Đơn hàng</a>
+    </nav>
+    <div class="search w-100">
+        <p>Tìm kiếm:</p>
+        <input type="text" name="" id="" class="w-100 rounded-pill" style="height: 40px;">
+    </div>
+    <router-outlet></router-outlet>
+</div>

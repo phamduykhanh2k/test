@@ -1,0 +1,78 @@
+.orders .setting-title {
+    font-size: 2.4rem;
+}
+
+.orders .setting-subtitle {
+    font-size: 1.4rem;
+    color: #aaa;
+    margin: 20px 0;
+}
+
+.orders .order {
+    background-color: #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.orders .order .order-header {
+    background-color: #2f5acf;
+    padding: 8px 0;
+}
+
+.orders .order .order-body {
+    margin: 10px 0;
+    border-bottom: 1px solid #aaa;
+}
+
+.orders .order .order-title {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.orders .order .order-date {
+    color: #fff;
+}
+
+.order .order-body .order-image {
+    min-width: 60px;
+    max-width: 100px;
+    min-height: 80px;
+    max-height: 100px;
+    padding: 5px;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.order-body .order-image img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+.order .order-body .order-name,
+.order .order-body .order-price {
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.order .order-body .order-quantity {
+    color: #aaa;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.orders .order .order-footer {
+    padding: 5px 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order .order-footer .order-total {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+}

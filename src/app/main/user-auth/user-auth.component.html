@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="login-area" *ngIf="showLogin">
+        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+            <h1 class="form-title">Đăng nhập</h1>
+            <div class="form-outline my-4 px-4">
+                <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập"
+                    formControlName="username" />
+            </div>
+            <div *ngIf="loginForm.controls['username'].errors && isCheckError">
+                <span style="color: red;">Tài khoản tối thiểu 5 ký tự</span>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-4 px-4">
+                <input type="password" name="password" class="form-control" placeholder="Mật khẩu"
+                    formControlName="password" />
+            </div>
+            <div *ngIf="loginForm.controls['password'].errors && isCheckError">
+                <span style="color: red;">Vui lòng nhập mật khẩu</span>
+            </div>
+
+            <!-- 2 column grid layout for inline styling -->
+            <div class="row mb-4 px-4">
+                <div class="col d-flex justify-content-between">
+                    <!-- Checkbox -->
+                    <div class="form-check">
+                        <input #saveUserCheckBox class="form-check-input" id="saveUserCheckBox" type="checkbox"
+                            formControlName="isSaveLogin" />
+                        <label class="form-check-label" for="form2Example31"> Nhớ mật khẩu </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <!-- Simple link -->
+                    <a href="#!">Quên mật khẩu?</a>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4 px-4 py-2">Đăng nhập</button>
+
+            <!-- Register buttons -->
+            <div class="text-center">
+                <p>Bạn chưa có tài khoản? <a class="auth-toggle-link" (click)="openSignUp()">Đăng ký</a></p>
+                <p>hoặc đăng nhập bằng:</p>
+                <button type="button" class="btn btn-link btn-floating mx-1 ">
+                    <i class="bi bi-facebook social-item"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="bi bi-google social-item"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="bi bi-instagram social-item"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="bi bi-whatsapp social-item"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="register-area" *ngIf="!showLogin">
+        <form class="login-form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
+            <h1 class="form-title">Đăng ký</h1>
+
+            <div class="form-outline my-4 px-4">
+                <input type="text" name="fullname" class="form-control" placeholder="Tên người dùng"
+                    formControlName="fullname" />
+                <div *ngIf="signUpForm.controls['fullname'].errors && isCheckError">
+                    <span style="color: red;">Tên người dùng tối thiểu 5 ký tự</span>
+                </div>
+            </div>
+
+            <div class="form-outline my-4 px-4">
+                <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập"
+                    formControlName="username" />
+                <div *ngIf="signUpForm.controls['username'].errors && isCheckError">
+                    <span style="color: red;">Tài khoản tối thiểu 5 ký tự</span>
+                </div>
+            </div>
+
+            <div class="form-outline mb-4 px-4">
+                <input type="password" name="password" class="form-control" placeholder="Mật khẩu"
+                    formControlName="password" />
+                <div *ngIf="signUpForm.controls['password'].errors && isCheckError">
+                    <span style="color: red;">Mật khẩu phải bao gồm 1 ký tự in hoa và 1 ký tự đặc biệt</span>
+                </div>
+            </div>
+
+            <div class="form-outline mb-4 px-4">
+                <input type="password" name="rePassword" class="form-control" placeholder="Nhập lại mật khẩu"
+                    formControlName="rePassword" />
+                <div *ngIf="signUpForm.controls['rePassword'].errors && isCheckError">
+                    <span style="color: red;">Mật khẩu không khớp</span>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4 px-4 py-2">Đăng ký</button>
+
+            <!-- Register buttons -->
+            <div class="text-center">
+                <p>Bạn đã có tài khoản? <a class="auth-toggle-link" (click)="openLogin()">Đăng nhập</a></p>
+                <p>hoặc đăng nhập bằng:</p>
+                <button type="button" class="btn btn-link btn-floating mx-1 ">
+                    <i class="bi bi-facebook social-item"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="bi bi-google social-item"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="bi bi-instagram social-item"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="bi bi-whatsapp social-item"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

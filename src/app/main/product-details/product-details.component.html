@@ -1,0 +1,53 @@
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Sản phẩm xanh và sạch</p>
+                    <h1>Thông tin sản phẩm</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="single-product mt-150 mb-150" *ngIf="product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="single-product-img">
+                    <img src="{{product.image}}" alt="">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="single-product-content">
+                    <h3>{{product.name}}</h3>
+                    <p class="single-product-pricing"><span>Giá theo Kg</span> {{product.price | currency: 'VND'}}</p>
+                    <p>{{product.description}}</p>
+                    <div class="single-product-form">
+                        <form>
+                            <button class="btn btn-quantity" (click)="handleQuantity('min')">-</button>
+                            <input class="quantity" type="text" disabled value="{{productQuantiy}}">
+                            <button class="btn btn-quantity" (click)="handleQuantity('plus')">+</button>
+                            <span class="stock">Kho: {{product.quantity}}</span>
+                        </form>
+                        <button class="cart-btn btn btn-primary my-4" type="submit" (click)="addToCart()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <!-- Thêm vào giỏ hàng -->
+                            Liên hệ với chúng tôi: 09339593727
+                        </button>
+
+                        <p><strong>Loại sản phẩm: </strong><span class="badge badge-info">{{product.categories}}</span>
+                        </p>
+                    </div>
+                    <h4>Chia sẻ đến:</h4>
+                    <ul class="product-share">
+                        <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                        <li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+                        <li><a href=""><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

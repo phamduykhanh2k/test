@@ -1,0 +1,120 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2 text-center">
+            <div class="section-title">
+                <h3><span class="orange-text">Sản Phẩm</span> Nổi Bật</h3>
+                <p>Trái cây nhập khẩu cao cấp tại Việt Nam <br>Mỗi loại trái cây đảm bảo xanh tươi, ngọt lịm, đảm bảo an
+                    toàn</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-6 text-center" *ngFor="let item of productList">
+            <div class="single-product-item">
+                <div class="product-image">
+                    <a class="d-block" routerLink="/details/{{item._id}}"><img src="{{item.image}}" alt=""></a>
+                </div>
+                <h3>{{item.name}}</h3>
+                <p class="product-price"><span>Giá theo kg</span> {{item.price | currency: 'VND'}} </p>
+                <a (click)="singleAddToCart(item)" class="cart-btn"><i class="fas fa-shopping-cart"></i>Thêm vào giỏ
+                    hàng</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="testimonail-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1 text-center">
+                <div class="testimonial-sliders">
+                    <div class="single-testimonial-slider">
+                        <div class="client-avater">
+                            <img src="assets/img/avaters/avatar1.png" alt="">
+                        </div>
+                        <div class="client-meta">
+                            <h3>Phạm Duy Khánh <span>Local shop owner</span></h3>
+                            <p class="testimonial-body">
+                                " Sed ut perspiciatis unde omnis iste natus error veritatis et quasi architecto beatae
+                                vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus
+                                error sit voluptatem accusantium "
+                            </p>
+                            <div class="last-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-testimonial-slider">
+                        <div class="client-avater">
+                            <img src="assets/img/avaters/avatar2.png" alt="">
+                        </div>
+                        <div class="client-meta">
+                            <h3>Giang Đức Huy <span>Local shop owner</span></h3>
+                            <p class="testimonial-body">
+                                " Sed ut perspiciatis unde omnis iste natus error veritatis et quasi architecto beatae
+                                vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus
+                                error sit voluptatem accusantium "
+                            </p>
+                            <div class="last-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-testimonial-slider">
+                        <div class="client-avater">
+                            <img src="assets/img/avaters/avatar3.png" alt="">
+                        </div>
+                        <div class="client-meta">
+                            <h3>Cẩm Tú <span>Local shop owner</span></h3>
+                            <p class="testimonial-body">
+                                " Sed ut perspiciatis unde omnis iste natus error veritatis et quasi architecto beatae
+                                vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus
+                                error sit voluptatem accusantium "
+                            </p>
+                            <div class="last-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="abt-section mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="abt-bg">
+                    <a href="https://www.youtube.com/watch?v=DBLlFWYcIGQ" class="video-play-btn popup-youtube"><i
+                            class="fas fa-play"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="abt-text">
+                    <h2>Về <span class="orange-text">K-Fruit</span></h2>
+                    <p>Thực phẩm xanh – sạch – ngon vẫn luôn là những tiêu chí hàng đầu giúp người tiêu dùng chọn lựa
+                        thực phẩm mỗi ngày.
+                        Thế nhưng khoảng thời gian gần đây lại có rất nhiều thương lái lợi dụng lòng tin của người tiêu
+                        dùng tráo các thực phẩm bẩn,
+                        kém chất lượng gây ảnh hưởng nghiêm trọng đến sức khỏe của mọi người.
+                    </p>
+                    <p>
+                        Đặc biệt với thị trường trái cây nhập khẩu thì tình trạng này lại tràn lan gây hoang mang cho
+                        người tiêu dùng.
+                        Nhận thấy những điều này, Vinfruits đã ra đời với sứ mệnh mang đến sức khỏe cho mọi nhà qua
+                        những loại trái cây
+                        ngoại nhập thượng hạng, chất lượng với tiêu chuẩn 3C: CHUẨN TƯƠI – CHUẨN NGON – CHUẨN SẠCH.
+                    </p>
+                    <a routerLink="/about" class="boxed-btn mt-4">Về chúng tôi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="shop-banner">
+    <app-shop-banner></app-shop-banner>
+</section>

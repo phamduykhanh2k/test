@@ -1,0 +1,47 @@
+<div class="orders">
+    <h2 class="setting-title text-center">Lịch sử giao dịch</h2>
+    <h3 class="setting-subtitle">Đơn hàng của bạn: {{orders.length}} đơn hàng</h3>
+    <div class="container order" *ngFor="let item of orders">
+        <a routerLink="/settings/order-details/{{item._id}}">
+            <div class="row align-items-center order-header">
+                <div class="col-10">
+                    <p class="order-title">#{{item._id}}</p>
+                    <p class="order-date">{{item.createdAt | date: 'yyyy-MM-dd'}}</p>
+                </div>
+                <div class="col-2" *ngIf="item.status === 'Chờ xác nhận'">
+                    <span class="order-status p-2 rounded-pill"
+                        style="color: orange; background-color: white; font-weight: 600;">{{item.status}}</span>
+                </div>
+                <div class="col-2" *ngIf="item.status === 'Đã xác nhận'">
+                    <span class="order-status p-2 rounded-pill"
+                        style="color: #007bff; background-color: white; font-weight: 600;">{{item.status}}</span>
+                </div>
+                <div class="col-2" *ngIf="item.status === 'Thành công'">
+                    <span class="order-status" style="color: green; font-weight: 600;">{{item.status}}</span>
+                </div>
+            </div>
+
+            <div class="row order-body" *ngFor="let product of item.products">
+                <div class="col-2 order-image">
+                    <img src="{{product.image}}" alt="Ảnh sản phẩm" srcset="">
+                </div>
+
+                <div class="col-8">
+                    <p class="order-name">{{product.name}}</p>
+                    <p class="order-quantity">x{{product.cartQuantity}}</p>
+                    <p class="order-price">{{product.price | currency: 'VND'}}</p>
+                </div>
+
+                <div class="col-2">
+                    <a href="#" class="btn btn-dark rounded-pill">Đánh giá sản phẩm</a>
+                </div>
+            </div>
+
+            <div class="row order-footer">
+                <p class="order-total">Tổng đơn hàng: </p>
+                <p class="order-total">{{item.totalPrice+"" | currency: 'VND'}}</p>
+            </div>
+        </a>
+    </div>
+
+</div>
