@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminGuard, AuthGuard, CartGuard, LoginGuard, authGuard } from './guards/auth.guard';
+import { AdminGuard, AuthGuard, LoginGuard } from './guards/auth.guard';
 import { AboutComponent } from './main/about/about.component';
-import { AppComponent } from './app.component';
 import { UserAuthComponent } from './main/user-auth/user-auth.component';
-import { MainComponent } from './main/main.component';
 import { ShopComponent } from './main/shop/shop.component';
 import { HomeComponent } from './main/home/home.component';
 import { ProductDetailsComponent } from './main/product-details/product-details.component';
@@ -13,12 +11,11 @@ import { CartPageComponent } from './main/cart-page/cart-page.component';
 import { ContactComponent } from './main/contact/contact.component';
 import { ManagerComponent } from './main/manager/manager.component';
 import { ProductManagerComponent } from './main/manager/product-manager/product-manager.component';
-import { UserManagerComponent } from './main/manager/user-manager/user-manager.component';
 import { SettingsComponent } from './main/settings/settings.component';
 import { AccountComponent } from './main/settings/account/account.component';
-import { OrderManagerComponent } from './main/manager/order-manager/order-manager.component';
 import { OrdersComponent } from './main/settings/orders/orders.component';
 import { CategoryManagerComponent } from './main/manager/category-manager/category-manager.component';
+import { CheckoutComponent } from './main/checkout/checkout.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,7 +23,8 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'shop', component: ShopComponent },
   { path: 'details/:id', component: ProductDetailsComponent },
-  { path: 'cart', component: CartPageComponent, canActivate: [CartGuard, AuthGuard] },
+  { path: 'cart', component: CartPageComponent, canActivate: [AuthGuard] },
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'contact', component: ContactComponent },
   {
     path: 'settings',
@@ -47,8 +45,7 @@ const routes: Routes = [
       { path: 'products/:id', component: ProductDetailsComponent },
       // { path: 'users', component: UserManagerComponent },
       // { path: 'orders', component: OrderManagerComponent },
-      { path: 'categories', component: CategoryManagerComponent }
-
+      { path: 'categories', component: CategoryManagerComponent },
     ]
   },
   { path: '**', component: PageNotFoundComponent },

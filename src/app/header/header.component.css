@@ -1,3 +1,16 @@
+.user {
+    position: relative;
+}
+
+.user-menu::after {
+    content: "";
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    height: 40px;
+}
+
 .user:hover .user-menu {
     display: block;
 }
@@ -6,7 +19,7 @@
     position: absolute;
     min-width: 220px;
     top: 45px;
-    left: 12px;
+    left: -80px;
     right: 0;
     padding: 10px 15px;
     background-color: white;
@@ -48,6 +61,10 @@
 
 .menu-btns button {
     font-size: 0.9rem;
+}
+
+.user .user-img:hover {
+    cursor: pointer;
 }
 
 

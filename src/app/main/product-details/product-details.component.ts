@@ -13,42 +13,27 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
-  productQuantiy = 1;
+  quantity = 1;
   removeCart = false;
 
   constructor(private productSrv: ProductService, private activeRoute: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private cartSrv: CartService) { }
+    private router: Router, private cartSrv: CartService) { }
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe((params: Params) => {
-      let productId = params['id'];
-      this.productSrv.GetProductById(productId).subscribe(result => {
-        this.product = result.data.at(0);
+      const productId = params['id'];
+
+      this.productSrv.GetProductById(productId).subscribe(res => {
+        const product = res.data;
+        this.product = product;
       })
     })
   }
 
-  handleQuantity(type: string) {
-    if (this.product) {
-      if (this.productQuantiy < this.product.quantity && type === 'plus') {
-        this.productQuantiy += 1;
-      } else if (this.productQuantiy > 1 && type === 'min') {
-        this.productQuantiy -= 1;
-      } else if (this.productQuantiy >= this.product.quantity && type === 'plus') {
-        this.toastr.warning('Vui lòng liên hệ cửa hàng để đặt sản phẩm', 'Sản phẩm không đủ')
-      }
-    }
-  }
-
   addToCart() {
-    // if (this.product) {
-    //   this.product.cartQuantity = this.productQuantiy;
-    //   if (localStorage.getItem('user')) {
-    //     this.cartSrv.localAddToCart(this.product);
-    //   } else {
-    //     this.toastr.warning('Vui lòng đăng nhập để mua sản phẩm')
-    //     this.router.navigate(['/authentication']);
-    //   }
-    // }
+    const isAddItem = this.cartSrv.addItemToCart(this.product!, this.quantity);
+
+    if (!isAddItem)
+      this.router.navigate(["authentication"]);
   }
 }

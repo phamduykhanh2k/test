@@ -41,23 +41,6 @@ export class AdminGuard {
 @Injectable({
   providedIn: 'root',
 })
-export class CartGuard {
-  constructor(private toastr: ToastrService) { }
-
-  canActivate(): boolean {
-    const cartLength = localStorage.getItem('localCart')?.length;
-    if (cartLength && cartLength > 2)
-      return true;
-    else {
-      this.toastr.warning('Giỏ hàng bị trống');
-      return false;
-    }
-  };
-}
-
-@Injectable({
-  providedIn: 'root',
-})
 export class LoginGuard {
   constructor(private toastr: ToastrService, private userSrv: UserAuthService, private router: Router) { }
 

@@ -2,103 +2,108 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Product } from '../models/product';
 import { ToastrService } from 'ngx-toastr';
 import { Route, Router } from '@angular/router';
-import { Cart } from '../models/cart';
-import { TotalSumary } from '../models/totalSumary';
 import { Order } from '../models/order';
+import { CartItem, ToTalSumary } from '../models/data-types';
+import { UserAuthService } from './user-auth.service';
+import { find } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  public cartData = new EventEmitter<Product[] | []>();
-  public totalSumaryEmit = new EventEmitter<TotalSumary>();
-  private products: Product[] = [];
+  public cartEmit = new EventEmitter<CartItem[]>();
+  private cart: CartItem[] | undefined;
 
-  constructor(private toasr: ToastrService, private router: Router) { }
-
-  getCart() {
-    const localCart = localStorage.getItem('localCart');
-    if (localCart) {
-      this.products = JSON.parse(localCart);
-
-      this.cartData.emit(this.products);
-    }
-    return this.products;
+  constructor(private toastr: ToastrService, private userSrv: UserAuthService) {
   }
 
-  getTotalSumary(products: Product[], shipCost: number) {
-    const subTotal = products.reduce((total: number, item: Product) => {
-      return total += item.price * item.cartQuantity;
-    }, 0);
+  addItemToCart = (item: Product, quantity: number): boolean => {
+    const user = this.userSrv.GetLocalUser();
 
-    const totalSumary: TotalSumary = {
-      subTotal: subTotal,
-      shipCost: shipCost,
-      total: subTotal + shipCost
+    if (user) {
+      const isValid = this.isValidQuantity(quantity, item);
+      if (isValid) {
+        const cartStore: CartItem[] = this.getLocalCart();
+        const index = cartStore.findIndex(cartItem => cartItem.product._id === item._id);
+
+        if (index !== -1) {
+          cartStore.at(index)!.quantity += quantity;
+        } else {
+          let cartItem: CartItem = {
+            product: item,
+            quantity: quantity
+          }
+          cartStore.push(cartItem);
+        }
+        localStorage.setItem("cart", JSON.stringify(cartStore));
+        this.cartEmit.emit(cartStore);
+        this.toastr.success("Bạn đã thêm một sản phẩm vào giỏ hàng");
+      }
+      return true;
     }
+    this.toastr.warning("Vui lòng đăng nhập để mua hàng");
+    return false;
+  }
+
+  getLocalCart = () => {
+    const localCart = localStorage.getItem("cart");
+
+    return localCart ? JSON.parse(localCart) : [];
+  }
+
+  changeQuantity = (index: number, newQuantity: number) => {
+    this.cart = this.getLocalCart();
+    this.cart![index].quantity = newQuantity;
+  }
+
+  updateCart = () => {
+    if (this.cart) {
+      const findError = this.cart.filter(cartItem => !this.isValidQuantity(cartItem.quantity, cartItem.product));
+
+      if (findError.length === 0) {
+        this.cartEmit.emit(this.cart);
+        localStorage.setItem("cart", JSON.stringify(this.cart));
+        this.toastr.success("Cập nhật giỏ hàng thành công");
+      }
+    }
+  }
+
+  removeItemtoCart = (index: number) => {
+    const cart: CartItem[] = this.getLocalCart();
+    const isDelete = confirm(`Bạn chắn chắn muốn bỏ ${cart.at(index)?.product.name} này chứ?`);
+
+    if (isDelete) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      this.cartEmit.emit(cart);
+      this.toastr.success("Xóa sản phẩm thành công");
+    }
+  }
+
+  isValidQuantity = (quantity: number, product: Product): boolean => {
+    if (quantity <= 0) {
+      this.toastr.warning("Số lượng sản phẩm tối thiểu là 1", "Số lượng không hợp lệ");
+      return false;
+    }
+
+    if (quantity > product.quantity) {
+      this.toastr.warning(`Số lượng ${product.name} không còn đủ`, "Hết hàng");
+      return false;
+    }
+
+    return true;
+  }
+
+  processTotalSumary = (cart: CartItem[]) => {
+    const subTotal = cart.reduce((previousValue, currentValue) => {
+      return previousValue + (currentValue.product.price * currentValue.quantity);
+    }, 0);
+    const shippingCost = 0;
+    const discount = 0;
+    const total = subTotal - shippingCost - discount;
+
+    const totalSumary: ToTalSumary = { subTotal, shippingCost, discount, total };
 
     return totalSumary;
-  }
-
-  localAddToCart(data: Product) {
-    let cartData = [];
-    let localCart = localStorage.getItem('localCart');
-
-    if (!localCart) {
-      localStorage.setItem('localCart', JSON.stringify([data]));
-      cartData.push(data);
-    } else {
-      cartData = JSON.parse(localCart);
-
-      let existItem = cartData.filter((item: Product) => item._id === data._id);
-
-      if (existItem.length === 0) {
-        cartData.push(data);
-      } else {
-        existItem[0].cartQuantity += data.cartQuantity;
-      }
-      localStorage.setItem('localCart', JSON.stringify(cartData));
-    }
-    this.toasr.success('Bạn đã thêm: ' + data.name + ' x ' + data.cartQuantity, 'Thêm thành công')
-    this.cartData.emit(cartData);
-  }
-
-  localRemoveItemCart(itemId: string) {
-    let localCart = localStorage.getItem('localCart');
-
-    if (localCart) {
-      let cartData = JSON.parse(localCart);
-      let items = cartData.filter((item: Product) => !(item._id === itemId))
-
-      localStorage.setItem('localCart', JSON.stringify(items));
-      this.cartData.emit(items);
-    }
-  }
-
-  singleAddToCart(item: Product) {
-    if (localStorage.getItem('user')) {
-      item.cartQuantity = 1;
-      this.localAddToCart(item);
-    } else {
-      this.toasr.warning('Vui lòng đăng nhập để mua sản phẩm')
-      this.router.navigate(['/authentication']);
-    }
-  }
-
-  changeQuantity(type: string, indexItem: number) {
-    if (this.products) {
-      let item = this.products[indexItem];
-
-      if (item.cartQuantity < item.quantity && type === 'plus') {
-        item.cartQuantity += 1;
-      } else if (item.cartQuantity > 1 && type === 'min') {
-        item.cartQuantity -= 1;
-      } else if (item.cartQuantity >= item.quantity && type === 'plus') {
-        this.toasr.warning('Vui lòng liên hệ cửa hàng để đặt sản phẩm', 'Sản phẩm không đủ')
-      }
-      localStorage.setItem('localCart', JSON.stringify(this.products));
-      this.cartData.emit(this.products);
-      this.totalSumaryEmit.emit(this.getTotalSumary(this.products, 0))
-    }
   }
 }

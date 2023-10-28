@@ -4,9 +4,9 @@ import { ProductService } from '../services/product.service';
 import { Product } from '../models/product';
 import { User } from '../models/user';
 import { UserAuthService } from '../services/user-auth.service';
-import { Cart } from '../models/cart';
 import { CartService } from '../services/cart.service';
 import { FilterService } from '../services/filter.service';
+import { CartItem } from '../models/data-types';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +22,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.userSrv.GetLocalUser();
+    const localCart: CartItem[] = this.cartSrv.getLocalCart();
+
+    this.cartQuantity = localCart?.length | this.cartQuantity;
 
     if (user) {
       this.userData = user;
@@ -31,14 +34,10 @@ export class HeaderComponent implements OnInit {
       this.userData = data;
     })
 
-    this.cartSrv.cartData.subscribe((items) => {
-      let s = 0;
-      items.forEach(item => {
-        s += item.cartQuantity;
-      });
-
-      this.cartQuantity = s;
+    this.cartSrv.cartEmit.subscribe(cart => {
+      this.cartQuantity = cart.length;
     })
+
   }
 
   constructor(private router: Router, private productSrv: ProductService, private userSrv: UserAuthService,
@@ -63,7 +62,7 @@ export class HeaderComponent implements OnInit {
     let keySearch = (event.target as HTMLInputElement).value;
     if (keySearch.length > 0) {
       this.isSearch = true;
-      const queryString = 'name=' + keySearch;
+      const queryString = 'name=' + '/^' + keySearch + '/';
       this.filterSrv.filterProduct(queryString).subscribe(products => {
         this.productsFilter = products.data;
       })

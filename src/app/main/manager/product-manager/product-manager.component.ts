@@ -70,7 +70,7 @@ export class ProductManagerComponent implements OnInit {
       image: item.image,
       quantity: item.quantity,
       price: item.price,
-      categories: item.categories,
+      categories: item.categories._id || '',
       description: item.description
     });
 

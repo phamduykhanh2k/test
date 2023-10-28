@@ -172,7 +172,7 @@
                 <td>{{item.name}}</td>
                 <td>{{item.price | currency: 'VND'}}</td>
                 <td>{{item.quantity}}</td>
-                <td>{{item.categories}}</td>
+                <td>{{item.categories.name}}</td>
                 <td>{{item.description}}</td>
                 <td>
                     <button class="btn btn-warning" (click)="getProduct(item)">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -11,6 +12,8 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductComponent implements OnInit {
   productList: Product[] | undefined;
 
+  constructor(private productSrv: ProductService, private cartSrv: CartService, private router: Router) { }
+
   ngOnInit(): void {
     this.productSrv.GetProducts();
     this.productSrv.productsEmit.subscribe(result => {
@@ -19,9 +22,9 @@ export class ProductComponent implements OnInit {
   }
 
   singleAddToCart(item: Product) {
-    // this.cartSrv.singleAddToCart(item);
+    const isAdd = this.cartSrv.addItemToCart(item, 1);
+
+    if (!isAdd)
+      this.router.navigate(["authentication"]);
   }
-
-  constructor(private productSrv: ProductService, private cartSrv: CartService) { }
-
 }

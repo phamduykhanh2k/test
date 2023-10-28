@@ -37,7 +37,10 @@ export class ShopComponent implements OnInit {
     private cartSrv: CartService, private categorySrv: CategoryService, private FilterSrv: FilterService) { }
 
   singleAddToCart(item: Product) {
-    this.cartSrv.singleAddToCart(item);
+    const isAdd = this.cartSrv.addItemToCart(item, 1);
+
+    if (!isAdd)
+      this.router.navigate(["authentication"]);
   }
 
   filter(id: string) {

@@ -61,7 +61,7 @@
                                                                 <span>{{item.name}}</span>
                                                                 <span>{{item.price | currency:'VND'}}</span>
                                                                 <span
-                                                                    class="badge badge-primary">{{item.categories}}</span>
+                                                                    class="badge badge-primary">{{item.categories.name}}</span>
                                                             </div>
                                                         </a>
                                                     </li>
@@ -72,25 +72,34 @@
                                 </div>
 
                                 <div class="user d-inline-block">
-                                    <a class="mobile-hide user-dropdown" routerLink="/authentication"><i
-                                            class="fas fa-user"></i></a>
-                                    <ul *ngIf="userData" class="user-menu">
-                                        <p class="menu-title text-center">Thông tin tài khoản</p>
-                                        <p class="menu-item">Tên TK: <span class="ml-2">{{userData.fullname |
-                                                titlecase}}</span></p>
-                                        <p class="menu-item">Vai trò: <span
-                                                class="badge badge-primary ml-2">{{userData.role}}</span></p>
-                                        <div class="menu-btns mt-3">
-                                            <a *ngIf="userData.role === 'Quản trị viên'" routerLink="/manager"
-                                                class="btn btn-success btn-block admin-btn">Trang quản
-                                                trị</a>
-                                            <a class="btn btn-primary btn-lg btn-block btn-history"
-                                                *ngIf="userData.role != 'Quản trị viên'" routerLink="/settings">Cài đặt
-                                                tài khoản</a>
-                                            <button class="btn btn-secondary btn-lg btn-block" (click)="logout()">Đăng
-                                                xuất</button>
-                                        </div>
-                                    </ul>
+                                    <a *ngIf="!userData" class="mobile-hide user-dropdown"
+                                        routerLink="/authentication"><i class="fas fa-user"></i></a>
+                                    <div *ngIf="userData" class="mobile-hide user-dropdown">
+                                        <img class="user-img" src="../../assets/img/customer-icon.png" width="35"
+                                            height="30" />
+
+                                        <ul class="user-menu mt-2">
+                                            <p class="menu-title text-center">Thông tin tài khoản</p>
+                                            <p class="menu-item">Tên TK: <span class="ml-2">{{userData.fullname |
+                                                    titlecase}}</span></p>
+                                            <p class="menu-item">Vai trò: <span
+                                                    class="badge badge-primary ml-2">{{userData.role}}</span></p>
+                                            <div class="menu-btns mt-3">
+                                                <a *ngIf="userData.role === 'Quản trị viên'" routerLink="/manager"
+                                                    class="btn btn-success btn-block admin-btn">Trang quản
+                                                    trị</a>
+                                                <a class="btn btn-primary btn-lg btn-block btn-history"
+                                                    *ngIf="userData.role != 'Quản trị viên'" routerLink="/settings">Cài
+                                                    đặt
+                                                    tài khoản</a>
+                                                <button class="btn btn-secondary btn-lg btn-block"
+                                                    (click)="logout()">Đăng
+                                                    xuất</button>
+                                            </div>
+                                        </ul>
+                                    </div>
+
+
                                 </div>
 
                             </div>

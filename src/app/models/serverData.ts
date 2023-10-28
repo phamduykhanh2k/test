@@ -1,4 +1,4 @@
 export interface ServerData {
     EC: number,
-    data: []
+    data: any
 }

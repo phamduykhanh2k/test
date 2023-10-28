@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Order } from '../models/order';
 import { User } from '../models/user';
-import { TotalSumary } from '../models/totalSumary';
 import { Product } from '../models/product';
 import { ServerData } from '../models/serverData';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +31,7 @@ export class OrderService {
     });
   }
 
-  AddOrder(userData: User, deliveryData: any, totalSumaryData: TotalSumary, products: Product[]) {
+  AddOrder(userData: User, deliveryData: any, totalSumaryData: any, products: Product[]) {
     const order: Order = {
       userId: userData._id!,
       address: deliveryData.address,

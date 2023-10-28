@@ -1,3 +1,16 @@
 .product-image {
     height: auto;
 }
+
+.coupon-section .voucher-box {
+    margin-bottom: 20px;
+}
+
+.coupon-section .voucher-box input {
+    padding-left: 10px;
+}
+
+.coupon-section .voucher-box button {
+    width: 120px;
+    padding: 10px;
+}

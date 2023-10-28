@@ -1,11 +1,9 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { BehaviorSubject, Observable, Observer, Subject, switchMap } from 'rxjs';
-import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { ServerData } from '../models/serverData';
-import { ToastrService } from 'ngx-toastr';
-import { FormGroup } from '@angular/forms';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 export class UserAuthService {
   userData = new EventEmitter<User | undefined>();
 
-  constructor(private http: HttpClient, private router: Router, private toasr: ToastrService) { }
+  constructor(private http: HttpClient, private injector: Injector) { }
 
   GetAll() {
     return this.http.get('http://localhost:8081/v1/api/users');
@@ -79,8 +77,10 @@ export class UserAuthService {
   }
 
   Logout() {
+    const cartSrv = this.injector.get(CartService);
     localStorage.clear();
     this.userData.emit(undefined);
+    cartSrv.cartEmit.emit([]);
   }
 
   private checkUsername(username: string): Observable<boolean> {

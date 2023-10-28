@@ -32,6 +32,8 @@ import { AccountComponent } from './main/settings/account/account.component';
 import { OrderManagerComponent } from './main/manager/order-manager/order-manager.component';
 import { OrdersComponent } from './main/settings/orders/orders.component';
 import { CategoryManagerComponent } from './main/manager/category-manager/category-manager.component';
+import { OrderDetailComponent } from './main/settings/orders/order-detail/order-detail.component';
+import { CheckoutComponent } from './main/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { CategoryManagerComponent } from './main/manager/category-manager/catego
     OrderManagerComponent,
     OrdersComponent,
     CategoryManagerComponent,
+    OrderDetailComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

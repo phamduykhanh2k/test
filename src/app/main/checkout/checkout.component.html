@@ -1,0 +1,109 @@
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Thực phẩm xanh và sạch</p>
+                    <h1>Đặt hàng</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="checkout-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="checkout-accordion-wrap">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card single-accordion">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Địa chỉ giao hàng
+                                    </button>
+                                </h5>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="billing-address-form">
+                                        <form action="index.html">
+                                            <p><input type="text" placeholder="Tên người nhận"></p>
+                                            <p><input type="email" placeholder="Email"></p>
+                                            <p><input type="text" placeholder="Địa chỉ giao hàng"></p>
+                                            <p><input type="tel" placeholder="Số điện thoại"></p>
+                                            <p><textarea name="bill" id="bill" cols="30" rows="10"
+                                                    placeholder="Ghi chú thêm..."></textarea></p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card single-accordion">
+                            <div class="card-header" id="headingThree">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                        data-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                        Phương thức thanh toán
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="card-details">
+                                        <p>Your card details goes here.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="order-details-wrap">
+                    <table class="order-details">
+                        <thead>
+                            <tr>
+                                <th>Chi tiết đơn hàng</th>
+                                <th>Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody class="order-details-body">
+                            <tr *ngFor="let item of cart">
+                                <td>{{item.product.name}}</td>
+                                <td>{{item.product.price * item.quantity | currency: "VND"}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="checkout-details">
+                            <tr>
+                                <td>Tạm tính</td>
+                                <td>{{totalSumary.subTotal | currency: "VND"}}</td>
+                            </tr>
+                            <tr>
+                                <td>Vận chuyển</td>
+                                <td>{{totalSumary.shippingCost | currency: "VND"}}</td>
+                            </tr>
+                            <tr>
+                                <td>Giảm giá</td>
+                                <td>{{totalSumary.discount | currency: "VND"}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tổng tiền</td>
+                                <td>{{totalSumary.total | currency: "VND"}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="boxed-btn">Đặt hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
