@@ -36,17 +36,14 @@
 }
 
 .order .order-body .order-image {
-    min-width: 60px;
-    max-width: 100px;
-    min-height: 80px;
-    max-height: 100px;
+    height: 12vh;
     padding: 5px;
     border-radius: 25px;
     overflow: hidden;
 }
 
 .order-body .order-image img {
-    width: 100%;
+    width: 5vw;
     height: 100%;
     background-size: cover;
 }

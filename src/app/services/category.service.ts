@@ -3,62 +3,74 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { ServerData } from '../models/serverData';
 import { Category } from '../models/category';
 import { Observable, Subject } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ObservableService } from './observable.service';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
+  categoriesEmit = new EventEmitter<Category[]>();
+  private schemaName = 'categories';
+  private categories: Category[] = [];
 
-  url: string = 'http://localhost:8081/v1/api/categories/'
-  categories = new EventEmitter<Category[]>();
+  constructor(
+    private http: HttpClient,
+    private observableSrv: ObservableService,
+    private nzMessageService: NzMessageService
+  ) { }
 
-  constructor(private http: HttpClient) { }
+  getAllCategory = async () => {
+    const categories = await this.observableSrv.getAll(this.schemaName);
 
-  getCategories() {
-    this.http.get<ServerData>(this.url).subscribe(result => {
-      this.categories.emit(result.data);
-    });
+    this.categories = categories;
+    this.categoriesEmit.emit(this.categories);
   }
 
-  createCategory(data: any): Observable<boolean> {
-    let subject = new Subject<boolean>();
+  createCategory = async (data: FormGroup): Promise<boolean> => {
+    const category = data.value as Category;
+    const result = await this.observableSrv.post(this.schemaName, category);
 
-    this.http.post<ServerData>(this.url, data).subscribe(result => {
-      if (result.data) {
-        this.getCategories();
-        subject.next(true);
-      } else {
-        subject.next(false);
-      }
-    })
-    return subject.asObservable();
+    if (result) {
+      this.categories.push(result);
+      this.nzMessageService.success('Thêm thành công');
+      return true;
+    }
+
+    this.nzMessageService.success('Thêm thất bại');
+    return false;
   }
 
-  updateCategory(data: any): Observable<boolean> {
-    let subject = new Subject<boolean>();
+  updateCategory = async (data: FormGroup): Promise<boolean> => {
+    const category = data.value;
+    const result = await this.observableSrv.update(this.schemaName, category);
 
-    this.http.put<ServerData>(this.url, data).subscribe(result => {
-      if (result.data) {
-        this.getCategories();
-        subject.next(true);
-      } else {
-        subject.next(false);
-      }
-    })
-    return subject.asObservable();
+    if (result.modifiedCount > 0) {
+      const findIndex = this.categories.findIndex(item => item._id === category._id);
+
+      this.categories[findIndex] = category;
+      this.nzMessageService.success('Cập nhật thành công');
+
+      return true;
+    }
+
+    this.nzMessageService.error('Cập nhật thất bại');
+    return false;
   }
 
-  deleteCategory(id: string) {
-    let subject = new Subject<boolean>();
-    this.http.delete<ServerData>(this.url + id).subscribe(result => {
-      const data: any = result.data;
-      if (data.modifiedCount > 0) {
-        subject.next(true)
-        this.getCategories();
-      } else {
-        subject.next(false);
-      }
-    });
-    return subject.asObservable();
+  deleteCategory = async (_id: string) => {
+    const result = await this.observableSrv.delete(this.schemaName, _id);
+
+    if (result.modifiedCount > 0) {
+      const findIndex = this.categories.findIndex(item => item._id === _id);
+
+      this.categories.splice(findIndex);
+      this.nzMessageService.success('Xóa thành công');
+
+      return true;
+    }
+    this.nzMessageService.error('Xóa thất bại');
+    return false;
   }
 }

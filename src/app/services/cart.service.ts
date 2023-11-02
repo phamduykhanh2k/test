@@ -2,7 +2,6 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Product } from '../models/product';
 import { ToastrService } from 'ngx-toastr';
 import { Route, Router } from '@angular/router';
-import { Order } from '../models/order';
 import { CartItem, ToTalSumary } from '../models/data-types';
 import { UserAuthService } from './user-auth.service';
 import { find } from 'rxjs';
@@ -51,6 +50,11 @@ export class CartService {
     return localCart ? JSON.parse(localCart) : [];
   }
 
+  removeLocalCart = () => {
+    localStorage.removeItem('cart');
+    this.cartEmit.emit([]);
+  }
+
   changeQuantity = (index: number, newQuantity: number) => {
     this.cart = this.getLocalCart();
     this.cart![index].quantity = newQuantity;
@@ -81,16 +85,37 @@ export class CartService {
   }
 
   isValidQuantity = (quantity: number, product: Product): boolean => {
-    if (quantity <= 0) {
-      this.toastr.warning("Số lượng sản phẩm tối thiểu là 1", "Số lượng không hợp lệ");
-      return false;
+    const localCart: CartItem[] = this.getLocalCart();
+    const cartItem = localCart.find(cartItem => cartItem.product._id === product._id);
+
+    if (cartItem) {
+      if (quantity <= 0) {
+        this.toastr.warning("Số lượng sản phẩm tối thiểu là 1", "Số lượng không hợp lệ");
+        return false;
+      }
+
+      if (quantity > product.quantity || quantity + cartItem.quantity > product.quantity) {
+        this.toastr.warning(`Số lượng ${product.name} không còn đủ hàng`, "Hết hàng");
+        return false;
+      }
     }
 
-    if (quantity > product.quantity) {
-      this.toastr.warning(`Số lượng ${product.name} không còn đủ`, "Hết hàng");
-      return false;
-    }
+    return true;
+  }
 
+  isValidQuantityByCart = (cart: CartItem[]): boolean => {
+    for (let i = 0; i < cart.length; i++) {
+      const cartItem = cart.at(i);
+      if (cartItem!.quantity <= 0) {
+        this.toastr.warning("Số lượng sản phẩm tối thiểu là 1", "Số lượng không hợp lệ");
+        return false;
+      }
+
+      if (cartItem!.quantity > cartItem!.product.quantity) {
+        this.toastr.warning(`Số lượng ${cartItem!.product.name} không còn đủ hàng`, "Hết hàng");
+        return false;
+      }
+    }
     return true;
   }
 
@@ -98,9 +123,9 @@ export class CartService {
     const subTotal = cart.reduce((previousValue, currentValue) => {
       return previousValue + (currentValue.product.price * currentValue.quantity);
     }, 0);
-    const shippingCost = 0;
+    const shippingCost = 25000;
     const discount = 0;
-    const total = subTotal - shippingCost - discount;
+    const total = subTotal + shippingCost - discount;
 
     const totalSumary: ToTalSumary = { subTotal, shippingCost, discount, total };
 

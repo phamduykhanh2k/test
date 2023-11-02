@@ -26,8 +26,8 @@
                     <div class="single-product-form">
                         <form>
                             <input class="mr-3 text-center" type="number" name="quantity" [(ngModel)]="quantity" min="1"
-                                max="100" minlength="1" maxlength="2">
-                            <span class="stock">Kho: {{product.quantity}}</span>
+                                max="100" onKeyPress="if(this.value.length==4) return false;">
+                            <span class="stock">Kho: {{product.quantity}} kg</span>
                         </form>
                         <button class="cart-btn btn btn-primary my-4" type="submit" (click)="addToCart()">
                             <i class="fas fa-shopping-cart"></i>

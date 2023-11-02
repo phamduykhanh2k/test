@@ -1,14 +1,14 @@
 <div class="account">
     <div class="container">
-        <form action="" [formGroup]="userForm" (submit)="updateUser()">
+        <form action="" [formGroup]="userForm">
             <h2 class="setting-title text-center">Thông tin tài khoản</h2>
             <div class="row align-items-center mt-5">
                 <div class="col-md-12 col-xl-3">
                     <p class="account-item">Họ và tên</p>
                 </div>
                 <div class="col-md-12 col-xl-9">
-                    <input type="text" placeholder="Họ và tên của bạn" formControlName="fullname">
-                    <div *ngIf="userForm.controls['fullname'].errors && isCheckError">
+                    <input type="text" placeholder="Họ và tên của bạn" formControlName="name">
+                    <div *ngIf="userForm.controls['name'].errors && isCheckError">
                         <span style="color: red;">Tên phải có độ dài từ 5 ký tự</span>
                     </div>
                 </div>
@@ -67,8 +67,12 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center my-5">
-                <button type="submit" class="btn btn-primary account-btn">Cập nhật tài khoản</button>
+            <div *ngIf="!notEditMode" class="text-center my-5">
+                <button type="submit" class="btn btn-primary btn-lg" (click)="onEditForm()">Cập nhật</button>
+            </div>
+            <div *ngIf="notEditMode" class="text-center my-5">
+                <button type="submit" class="btn btn-secondary btn-lg mx-5" (click)="onEditForm()">Đóng</button>
+                <button type="submit" class="btn btn-success btn-lg mx-5" (click)="onUpdate()">Xác nhận</button>
             </div>
         </form>
     </div>

@@ -4,95 +4,69 @@ import { BehaviorSubject, Observable, Observer, Subject, switchMap } from 'rxjs'
 import { User } from '../models/user';
 import { ServerData } from '../models/serverData';
 import { CartService } from './cart.service';
+import { ObservableService } from './observable.service';
+import { FormGroup } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserAuthService {
-  userData = new EventEmitter<User | undefined>();
+  usersEmit = new EventEmitter<User[]>();
+  userEmit = new EventEmitter<User>()
+  private schemaName = 'users';
+  private users: User[] = [];
+  private user: User;
 
-  constructor(private http: HttpClient, private injector: Injector) { }
+  constructor(private http: HttpClient,
+    private toastr: ToastrService,
+    private observableSrv: ObservableService,
+    private message: NzMessageService) { }
 
-  GetAll() {
-    return this.http.get('http://localhost:8081/v1/api/users');
+  GetAll = async () => {
+    const result = await this.observableSrv.getAll(this.schemaName);
+    this.users = result;
+    this.usersEmit.emit(this.users);
   }
 
-  SignUp(data: any): Observable<boolean> {
-    var subject = new Subject<boolean>();
+  updateUser = async (data: any) => {
+    const result = await this.observableSrv.update(this.schemaName, data);
 
-    this.checkUsername(data.username).subscribe(result => {
-      if (result) {
-        subject.next(false);
-      } else {
-        this.http.post<ServerData>('http://localhost:8081/v1/api/users', data).subscribe(result => {
-          subject.next(true);
-        });
-      }
-    });
-    return subject.asObservable();
+    if (result.modifiedCount > 0) {
+      this.message.success('Cập nhật thành công');
+      return true;
+    } else {
+      this.message.error('Cập nhật thất bại');
+      return false;
+    }
   }
 
-  LoggedIn(data: any): Observable<boolean> {
-    var subject = new Subject<boolean>();
+  deleteUser = async (user: User) => {
+    const _id = user._id;
+    const result = await this.observableSrv.delete(this.schemaName, _id!);
 
-    this.http.post<ServerData>('http://localhost:8081/v1/api/users', data).subscribe(result => {
-      const user: User | undefined = result.data.at(0);
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userData.emit(user);
-        subject.next(true);
-      } else {
-        subject.next(false);
+    if (result.modifiedCount > 0) {
+      const findIndex = this.users.findIndex(item => item._id === user._id);
+
+      if (findIndex !== -1) {
+        this.users.splice(findIndex, 1);
+        this.message.success('Xóa thành công');
       }
-    });
+    } else {
+      this.message.error('Xóa thất bại');
+    }
 
-    return subject.asObservable();
-  }
-
-  UpdateUser(data: any): Observable<boolean> {
-    let subject = new Subject<boolean>();
-
-    this.http.put<ServerData>('http://localhost:8081/v1/api/users', data).subscribe(result => {
-      if (result.data) {
-        localStorage.setItem('user', JSON.stringify(data));
-        this.userData.emit(data);
-        subject.next(true);
-      } else {
-        this.userData.emit();
-        subject.next(false);
-      }
-    });
-
-    return subject.asObservable();
   }
 
   GetLocalUser() {
     let localUser = localStorage.getItem('user') != null ? localStorage.getItem('user') : undefined;
 
     if (localUser) {
-      let user: User = JSON.parse(localUser);
-      return user;
+      this.user = JSON.parse(localUser);
+      this.userEmit.emit(this.user);
+      return this.user;
     }
     return null;
-  }
-
-  Logout() {
-    const cartSrv = this.injector.get(CartService);
-    localStorage.clear();
-    this.userData.emit(undefined);
-    cartSrv.cartEmit.emit([]);
-  }
-
-  private checkUsername(username: string): Observable<boolean> {
-    let subject = new Subject<boolean>();
-
-    this.http.get<ServerData>('http://localhost:8081/v1/api/users?username=' + username).subscribe(result => {
-      if (result.data.length > 0) {
-        subject.next(true);
-      } else {
-        subject.next(false);
-      }
-    })
-    return subject.asObservable();
   }
 }

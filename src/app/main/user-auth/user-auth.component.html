@@ -67,9 +67,9 @@
             <h1 class="form-title">Đăng ký</h1>
 
             <div class="form-outline my-4 px-4">
-                <input type="text" name="fullname" class="form-control" placeholder="Tên người dùng"
-                    formControlName="fullname" />
-                <div *ngIf="signUpForm.controls['fullname'].errors && isCheckError">
+                <input type="text" name="name" class="form-control" placeholder="Tên người dùng"
+                    formControlName="name" />
+                <div *ngIf="signUpForm.controls['name'].errors && isCheckError">
                     <span style="color: red;">Tên người dùng tối thiểu 5 ký tự</span>
                 </div>
             </div>

@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserAuthService } from './services/user-auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './main/about/about.component';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
@@ -32,8 +30,15 @@ import { AccountComponent } from './main/settings/account/account.component';
 import { OrderManagerComponent } from './main/manager/order-manager/order-manager.component';
 import { OrdersComponent } from './main/settings/orders/orders.component';
 import { CategoryManagerComponent } from './main/manager/category-manager/category-manager.component';
-import { OrderDetailComponent } from './main/settings/orders/order-detail/order-detail.component';
+import { OrderDetailComponent } from './main/order-detail/order-detail.component';
 import { CheckoutComponent } from './main/checkout/checkout.component';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { AuthInterceptor } from './core/auth.interceptor';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @NgModule({
   declarations: [
@@ -72,11 +77,19 @@ import { CheckoutComponent } from './main/checkout/checkout.component';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    NzButtonModule,
+    NzPopconfirmModule,
+    NzIconModule,
+    NzDrawerModule,
+    NzRadioModule,
+    NzTagModule
   ],
-  providers: [
-
-  ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

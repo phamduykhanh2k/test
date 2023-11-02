@@ -1,0 +1,121 @@
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Dịch vụ chất lượng cao</p>
+                    <h1>Thông tin đơn hàng</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="order" class="container mt-5">
+    <div class="row">
+        <div class="col-12 d-flex align-items-center">
+            <h2 class="title m-0">Thông tin đơn hàng #{{order._id}}</h2>
+            <div class="ml-3">
+                <span *ngIf="order.status === 'Đã xác nhận'" class="badge badge-success p-2"
+                    style="font-size: 0.9rem;">{{order.status}}</span>
+                <span *ngIf="order.status === 'Chờ xác nhận'" class="badge badge-warning p-2"
+                    style="font-size: 0.9rem;">{{order.status}}</span>
+                <span *ngIf="order.status === 'Hủy đơn hàng'" class="badge badge-danger p-2"
+                    style="font-size: 0.9rem;">{{order.status}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row order-detail mt-3">
+        <div class="col-12 d-flex">
+            <p>Ngày đặt hàng:</p>
+            <p>{{order.createdAt | date: 'dd-MM-yyyy'}}</p>
+        </div>
+        <div class="col-12 d-flex">
+            <p>Tên người nhận:</p>
+            <p>{{order.name}}</p>
+        </div>
+        <div class="col-12 d-flex">
+            <p>Số điện thoại:</p>
+            <p>{{order.phone}}</p>
+        </div>
+        <div class="col-12 d-flex">
+            <p>Phương thức thanh toán:</p>
+            <p>{{order.paymentMethod}}</p>
+        </div>
+        <div class="col-12 d-flex">
+            <p>Địa chỉ giao hàng:</p>
+            <p>{{order.address}}</p>
+        </div>
+        <div class="col-12 d-flex">
+            <p>Ghi chú:</p>
+            <p>{{order.note}}</p>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="order" class="cart-section mt-5 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+                        <thead class="cart-table-head">
+                            <tr class="table-head-row">
+                                <th>Hình ảnh</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of order.cart" class="table-body-row">
+                                <td>
+                                    <img class="product-image" src="{{item.product.image}}" alt="Hình ảnh">
+                                </td>
+                                <td>{{item.product.name}}</td>
+                                <td>{{item.product.price | currency: 'VND'}}</td>
+                                <td>{{item.quantity}}</td>
+                                <td>{{item.quantity * item.product.price | currency: 'VND'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="total-section">
+                    <table class="total-table">
+                        <thead class="total-table-head">
+                            <tr class="table-total-row">
+                                <th colspan="2" class="text-center">Hóa đơn chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="total-data">
+                                <td><strong>Mã giảm giá: </strong></td>
+                                <td>(Đang phát triển)</td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Tổng giá trị sản phẩm: </strong></td>
+                                <td>{{order.totalPrice - order.shippingCost | currency: 'VND'}}</td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Giảm giá: </strong></td>
+                                <td>(Đang phát triển)</td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Phí vận chuyển: </strong></td>
+                                <td>{{order.shippingCost | currency: 'VND'}}</td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Tổng thanh toán: </strong></td>
+                                <td>{{order.totalPrice | currency: 'VND'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

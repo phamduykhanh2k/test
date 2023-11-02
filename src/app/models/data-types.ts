@@ -1,4 +1,5 @@
 import { Product } from "./product"
+import { User } from "./user"
 
 export interface signUp {
     fullname: string,
@@ -16,4 +17,19 @@ export interface ToTalSumary {
     shippingCost: number,
     discount?: number,
     total: number
+}
+
+export interface Order {
+    _id?: string,
+    userId: string,
+    name: string,
+    address: string,
+    note: String,
+    phone: string,
+    shippingCost: number,
+    totalPrice: number,
+    paymentMethod: string,
+    status: string,
+    cart: CartItem[],
+    createdAt?: Date
 }
