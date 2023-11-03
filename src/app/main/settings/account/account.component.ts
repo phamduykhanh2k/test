@@ -38,10 +38,10 @@ export class AccountComponent {
   setValueForm = (user: User) => {
     this.userForm.setValue({
       name: user.name,
-      email: user.email!,
-      phone: user.phone!,
-      address: user.address!,
-      gender: user.gender!
+      email: user.email || '',
+      phone: user.phone || '',
+      address: user.address || '',
+      gender: user.gender || ''
     })
   }
 

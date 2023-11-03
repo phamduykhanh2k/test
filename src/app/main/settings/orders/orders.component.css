@@ -36,14 +36,14 @@
 }
 
 .order .order-body .order-image {
-    height: 12vh;
+    height: 90px;
     padding: 5px;
     border-radius: 25px;
     overflow: hidden;
 }
 
 .order-body .order-image img {
-    width: 5vw;
+    width: 100px;
     height: 100%;
     background-size: cover;
 }
@@ -72,4 +72,13 @@
     font-size: 1.2rem;
     font-weight: 500;
     margin: 0;
+}
+
+textarea {
+    width: 100%;
+}
+
+.ant-rate-text {
+    margin-left: 20px;
+    font-size: 1.1rem;
 }

@@ -211,3 +211,21 @@ body {
     border-radius: 10px;
     border-width: thin;
 }
+
+.ant-rate-star>div {
+    font-size: 1.8rem;
+}
+
+.ant-comment-inner {
+    padding: 0;
+}
+
+.ant-modal-content {
+    border-radius: 10px;
+}
+
+.ant-modal-title .ng-star-inserted {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 600;
+}

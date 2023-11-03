@@ -39,6 +39,9 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { AuthInterceptor } from './core/auth.interceptor';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 @NgModule({
   declarations: [
@@ -83,7 +86,10 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzIconModule,
     NzDrawerModule,
     NzRadioModule,
-    NzTagModule
+    NzTagModule,
+    NzModalModule,
+    NzRateModule,
+    NzCommentModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

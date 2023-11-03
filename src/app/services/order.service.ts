@@ -61,7 +61,7 @@ export class OrderService {
 
     const result = await this.observableSrv.post(this.schemaName, order);
 
-    if (result?.data) {
+    if (result) {
       this.toastr.success("Đặt hàng thành công");
       localStorage.removeItem('cart');
       this.cartSrv.removeLocalCart();

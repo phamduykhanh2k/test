@@ -31,5 +31,13 @@ export interface Order {
     paymentMethod: string,
     status: string,
     cart: CartItem[],
-    createdAt?: Date
+    createdAt?: Date,
+    updatedAt?: Date
+}
+
+export interface Feedback {
+    user: User,
+    product: Product,
+    score: number,
+    note: string
 }

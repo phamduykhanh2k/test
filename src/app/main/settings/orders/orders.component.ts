@@ -29,4 +29,15 @@ export class OrdersComponent {
   }
 
   constructor(private orderSrv: OrderService, private userSrv: UserAuthService) { }
+  isVisible = false;
+  tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
+  value = 3;
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
 }
