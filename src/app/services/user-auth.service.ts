@@ -35,9 +35,10 @@ export class UserAuthService {
 
     if (result.modifiedCount > 0) {
       this.message.success('Cập nhật thành công');
+      this.GetAll(); // BUG ERROR
       return true;
     } else {
-      this.message.error('Cập nhật thất bại');
+      this.message.error('Tài khoản đã tồn tại');
       return false;
     }
   }

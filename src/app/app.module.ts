@@ -42,6 +42,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { FeedbacksComponent } from './main/settings/feedbacks/feedbacks.component';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,7 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
     CategoryManagerComponent,
     OrderDetailComponent,
     CheckoutComponent,
+    FeedbacksComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +92,8 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
     NzTagModule,
     NzModalModule,
     NzRateModule,
-    NzCommentModule
+    NzCommentModule,
+    NzAvatarModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

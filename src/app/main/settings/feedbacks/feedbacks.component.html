@@ -1,0 +1,25 @@
+<h5 class="card-header">Danh sách đánh giá</h5>
+
+<div class="card" *ngFor="let feedback of feedbacks">
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3">
+                <img src="{{feedback.product.image}}" alt="">
+            </div>
+            <div class="col-9">
+                <h5 class="card-title">{{feedback.product.name}}</h5>
+                <nz-comment-content>
+                    <strong class="mr-3">Điểm đánh giá:</strong>
+                    <nz-rate [nzDisabled]="true" [ngModel]="feedback.score"></nz-rate>
+                    <p>
+                        <strong class="mr-3">Nội dung:</strong>{{feedback.note}}
+                    </p>
+                </nz-comment-content>
+                <div class="mt-3">
+                    <a href="#" class="btn btn-dark">Sửa đánh giá</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

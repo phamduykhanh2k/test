@@ -39,6 +39,7 @@ export class UserManagerComponent implements OnInit {
 
   open(user: User): void {
     this.visible = true;
+    console.warn(user);
     this.setValueForm(user);
   }
 
@@ -62,10 +63,10 @@ export class UserManagerComponent implements OnInit {
       username: user.username,
       role: user.role,
       name: user.name,
-      email: user.email,
-      phone: user.phone,
-      address: user.address,
-      gender: user.gender
+      email: user.email || '',
+      phone: user.phone || '',
+      address: user.address || '',
+      gender: user.gender || ''
     })
   }
 

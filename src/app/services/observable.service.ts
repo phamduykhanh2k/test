@@ -13,7 +13,7 @@ export class ObservableService {
 
   private urlAPI = 'http://localhost:8081/v1/api/';
 
-  private getValueFromObservable = async (observable: Observable<ServerData>) => {
+  public getValueFromObservable = async (observable: Observable<ServerData>) => {
     const promise = observable.pipe(take(1)).toPromise()
     const value = await promise.then((data => data)).catch((err) => {
       if (err.status === 401)

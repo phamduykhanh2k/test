@@ -38,6 +38,7 @@ export class OrderService {
     this.http.get<ServerData>('http://localhost:8081/v1/api/orders?userId=' + userId, { withCredentials: true }).subscribe(result => {
       if (result.data.length > 0) {
         this.orders.emit(result.data);
+        console.warn(result.data);
       } else {
         // show thông báo
       }

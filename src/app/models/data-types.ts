@@ -40,4 +40,6 @@ export interface Feedback {
     product: Product,
     score: number,
     note: string
+    createdAt: Date,
+    updatedAt: Date
 }

@@ -8,6 +8,7 @@ import { Observable, Subject, find } from 'rxjs';
 import { ObservableService } from './observable.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormGroup } from '@angular/forms';
+import { FilterService } from './filter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class ProductService {
 
   constructor(private http: HttpClient,
     private observableSrv: ObservableService,
-    private nzMessageService: NzMessageService) { }
+    private nzMessageService: NzMessageService,
+    private filterSrv: FilterService) { }
 
 
   getAllProduct = async () => {
@@ -79,5 +81,10 @@ export class ProductService {
 
     this.nzMessageService.error('Xóa thất bại');
     return false;
+  }
+
+  handleFilterProductByName = async (name: string) => {
+    const queryString = 'products?name=/^' + name + '/';
+    return await this.filterSrv.filter(queryString);
   }
 }

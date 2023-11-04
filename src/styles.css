@@ -225,7 +225,11 @@ body {
 }
 
 .ant-modal-title .ng-star-inserted {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-align: center;
     font-weight: 600;
+}
+
+.ant-comment-content-author>span {
+    font-size: 1.4rem;
 }

@@ -19,6 +19,7 @@ import { CheckoutComponent } from './main/checkout/checkout.component';
 import { OrderManagerComponent } from './main/manager/order-manager/order-manager.component';
 import { OrderDetailComponent } from './main/order-detail/order-detail.component';
 import { UserManagerComponent } from './main/manager/user-manager/user-manager.component';
+import { FeedbacksComponent } from './main/settings/feedbacks/feedbacks.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,7 +38,8 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/settings/account', pathMatch: 'full' },
       { path: 'account', component: AccountComponent },
-      { path: 'orders', component: OrdersComponent }
+      { path: 'orders', component: OrdersComponent },
+      { path: 'feedbacks', component: FeedbacksComponent },
     ]
   },
   {

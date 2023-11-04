@@ -51,3 +51,22 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row my-5">
+        <h4>Phản hồi từ khách hàng</h4>
+    </div>
+    <div class="row mb-5" *ngFor="let feedback of feedbacks">
+        <nz-comment nzAuthor="{{feedback.user.name}}" nzDatetime="{{feedback.createdAt | date: 'dd-MM-yyyy'}}">
+            <nz-avatar nz-comment-avatar nzIcon="user"
+                nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+            <nz-comment-content>
+                <strong class="mr-3">Điểm đánh giá:</strong>
+                <nz-rate [nzDisabled]="true" [ngModel]="feedback.score"></nz-rate>
+                <p>
+                    <strong class="mr-3">Nội dung:</strong>{{feedback.note}}
+                </p>
+            </nz-comment-content>
+        </nz-comment>
+    </div>
+</div>

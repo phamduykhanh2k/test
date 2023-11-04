@@ -54,8 +54,8 @@ export class ShopComponent implements OnInit {
   filter(id: string) {
     this.cateChoosed = id;
     const queryString = 'categories=' + id;
-    this.FilterSrv.filterProduct(queryString).subscribe(result => {
-      this.productList = result.data;
-    });
+    // this.FilterSrv.filterProduct(queryString).subscribe(result => {
+    //   this.productList = result.data;
+    // });
   }
 }

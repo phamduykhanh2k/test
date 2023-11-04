@@ -59,14 +59,11 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  onChangeSearch(event: Event) {
+  onChangeSearch = async (event: Event) => {
     let keySearch = (event.target as HTMLInputElement).value;
     if (keySearch.length > 0) {
       this.isSearch = true;
-      const queryString = 'name=' + '/^' + keySearch + '/';
-      this.filterSrv.filterProduct(queryString).subscribe(products => {
-        this.productsFilter = products.data;
-      })
+      this.productsFilter = await this.productSrv.handleFilterProductByName(keySearch);
     } else {
       this.isSearch = false;
     }

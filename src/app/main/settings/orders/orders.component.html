@@ -36,6 +36,30 @@
             <div class="col-2" *ngIf="item.status === 'Đã xác nhận'">
                 <button (click)="showModal()" class="btn btn-dark rounded-pill">Đánh giá sản phẩm</button>
             </div>
+
+
+            <nz-modal [(nzVisible)]="isVisible" nzTitle="Đánh giá của bạn" [nzContent]="modalContent"
+                [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+
+                <ng-template #modalContent>
+                    <strong class="mr-4">Đánh giá</strong>
+                    <nz-rate [(ngModel)]="score" [nzTooltips]="tooltips"></nz-rate>
+                    <span *ngIf="score" class="ant-rate-text">{{ score ? tooltips[score - 1] : '' }}</span>
+                    <div class="comment mt-3">
+                        <strong>Bình luận:</strong>
+                        <nz-comment>
+                            <nz-comment-content>
+                                <textarea [(ngModel)]="comment" nz-input rows="4"></textarea>
+                            </nz-comment-content>
+                        </nz-comment>
+                    </div>
+                </ng-template>
+
+                <ng-template #modalFooter>
+                    <button (click)="onCreateFeedback(item._id!,cart.product._id!)"
+                        class="btn btn-dark btn-lg w-100 rounded-pill">Đánh giá</button>
+                </ng-template>
+            </nz-modal>
         </div>
 
         <div class="row order-footer">
@@ -51,25 +75,3 @@
         </div>
     </div>
 </div>
-
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Đánh giá của bạn" [nzContent]="modalContent" [nzFooter]="modalFooter"
-    (nzOnCancel)="handleCancel()">
-
-    <ng-template #modalContent>
-        <strong class="mr-4">Đánh giá</strong>
-        <nz-rate [(ngModel)]="value" [nzTooltips]="tooltips"></nz-rate>
-        <span *ngIf="value" class="ant-rate-text">{{ value ? tooltips[value - 1] : '' }}</span>
-        <div class="comment mt-3">
-            <strong>Bình luận:</strong>
-            <nz-comment>
-                <nz-comment-content>
-                    <textarea nz-input rows="4"></textarea>
-                </nz-comment-content>
-            </nz-comment>
-        </div>
-    </ng-template>
-
-    <ng-template #modalFooter>
-        <button class="btn btn-dark btn-lg w-100 rounded-pill">Đánh giá</button>
-    </ng-template>
-</nz-modal>
