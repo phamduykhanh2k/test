@@ -1,0 +1,22 @@
+.table-head-row {
+    background-color: #2f5acf;
+}
+
+.table-head-row th {
+    color: white;
+}
+
+.title {
+    font-size: 1.6rem;
+}
+
+.order-detail p {
+    min-width: 20vw;
+    font-size: 1.2rem;
+}
+
+.product-image {
+    width: 10vh;
+    height: 5vw;
+    padding: 0;
+}

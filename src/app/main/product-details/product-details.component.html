@@ -26,8 +26,8 @@
                     <div class="single-product-form">
                         <form>
                             <input class="mr-3 text-center" type="number" name="quantity" [(ngModel)]="quantity" min="1"
-                                max="100" minlength="1" maxlength="2">
-                            <span class="stock">Kho: {{product.quantity}}</span>
+                                max="100" onKeyPress="if(this.value.length==4) return false;">
+                            <span class="stock">Kho: {{product.quantity}} kg</span>
                         </form>
                         <button class="cart-btn btn btn-primary my-4" type="submit" (click)="addToCart()">
                             <i class="fas fa-shopping-cart"></i>
@@ -49,5 +49,24 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row my-5">
+        <h4>Phản hồi từ khách hàng</h4>
+    </div>
+    <div class="row mb-5" *ngFor="let feedback of feedbacks">
+        <nz-comment nzAuthor="{{feedback.user.name}}" nzDatetime="{{feedback.createdAt | date: 'dd-MM-yyyy'}}">
+            <nz-avatar nz-comment-avatar nzIcon="user"
+                nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+            <nz-comment-content>
+                <strong class="mr-3">Điểm đánh giá:</strong>
+                <nz-rate [nzDisabled]="true" [ngModel]="feedback.score"></nz-rate>
+                <p>
+                    <strong class="mr-3">Nội dung:</strong>{{feedback.note}}
+                </p>
+            </nz-comment-content>
+        </nz-comment>
     </div>
 </div>

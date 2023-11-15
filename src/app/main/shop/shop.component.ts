@@ -18,23 +18,31 @@ export class ShopComponent implements OnInit {
   productList: Product[] = [];
   categories: Category[] = [];
   page: number = 1;
-
   cateChoosed: String = "";
 
+  constructor(
+    private productSrv: ProductService,
+    private toastr: ToastrService,
+    private router: Router,
+    private cartSrv: CartService,
+    private categorySrv: CategoryService,
+    private FilterSrv: FilterService) {
+
+    this.categorySrv.getAllCategory();
+    this.productSrv.getAllProduct();
+  }
+
   ngOnInit(): void {
-    this.categorySrv.getCategories();
-    this.categorySrv.categories.subscribe(result => {
+    this.categorySrv.categoriesEmit.subscribe(result => {
       this.categories = result;
     })
 
-    this.productSrv.GetProducts();
     this.productSrv.productsEmit.subscribe(result => {
       this.productList = result;
     })
   }
 
-  constructor(private productSrv: ProductService, private toastr: ToastrService, private router: Router,
-    private cartSrv: CartService, private categorySrv: CategoryService, private FilterSrv: FilterService) { }
+
 
   singleAddToCart(item: Product) {
     const isAdd = this.cartSrv.addItemToCart(item, 1);
@@ -46,8 +54,8 @@ export class ShopComponent implements OnInit {
   filter(id: string) {
     this.cateChoosed = id;
     const queryString = 'categories=' + id;
-    this.FilterSrv.filterProduct(queryString).subscribe(result => {
-      this.productList = result.data;
-    });
+    // this.FilterSrv.filterProduct(queryString).subscribe(result => {
+    //   this.productList = result.data;
+    // });
   }
 }

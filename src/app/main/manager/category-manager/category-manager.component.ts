@@ -15,31 +15,31 @@ export class CategoryManagerComponent implements OnInit {
   isError = false;
   categories: Category[] = [];
 
-  constructor(private categorySrv: CategoryService, private builder: FormBuilder, private toastr: ToastrService) { }
+  constructor(private categorySrv: CategoryService,
+    private builder: FormBuilder,
+    private toastr: ToastrService) {
+    this.categorySrv.getAllCategory();
+  }
 
   categoryForm = this.builder.group({
-    id: '',
+    _id: this.builder.control(''),
     name: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(1000)])),
     description: ''
   })
 
   ngOnInit(): void {
-    this.categorySrv.getCategories();
-    this.categorySrv.categories.subscribe(categories => {
+    this.categorySrv.categoriesEmit.subscribe(categories => {
       this.categories = categories;
     })
   }
 
-  createCategory() {
+  createCategory = async () => {
     if (this.categoryForm.valid) {
-      this.categorySrv.createCategory(this.categoryForm.value).subscribe(result => {
-        if (result) {
-          this.categoryForm.reset();
-          this.toastr.success('Thêm danh mục thành công');
-        } else {
-          this.toastr.warning('Tên danh mục đã tồn tại');
-        }
-      });
+      const isCreated = await this.categorySrv.createCategory(this.categoryForm);
+
+      if (isCreated)
+        this.categoryForm.reset();
+
     } else {
       this.isError = true;
     }
@@ -47,36 +47,27 @@ export class CategoryManagerComponent implements OnInit {
 
   getCategory(item: Category) {
     this.categoryForm.setValue({
-      id: item._id || '',
+      _id: item._id || '',
       name: item.name,
       description: item.description || ''
     });
     this.formType = 'Edit'
   }
 
-  updateCategory() {
+  updateCategory = async () => {
     if (this.categoryForm.valid) {
-      this.categorySrv.updateCategory(this.categoryForm.value).subscribe(result => {
-        if (result) {
-          this.categoryForm.reset();
-          this.formType = '';
-          this.toastr.success('Sửa danh mục thành công');
-        } else {
-          this.toastr.warning('Tên danh mục đã tồn tại');
-        }
-      });
+      const result = await this.categorySrv.updateCategory(this.categoryForm);
+
+      if (result) {
+        this.categoryForm.reset();
+        this.formType = '';
+      }
     } else {
       this.isError = true;
     }
   }
 
   removeProduct(item: Category) {
-    this.categorySrv.deleteCategory(item._id!).subscribe(result => {
-      if (result) {
-        this.toastr.success('Xóa thành công');
-      } else {
-        this.toastr.warning('Có lẽ hệ thống đang gặp sự cố', 'Sửa thất bại');
-      }
-    });
+    this.categorySrv.deleteCategory(item._id!);
   }
 }

@@ -25,7 +25,6 @@ body {
   letter-spacing: 0.1px;
   line-height: 1.8;
   color: #051922;
-  overflow-x: hidden;
 }
 
 body img {
@@ -441,6 +440,7 @@ p:last-child {
   background-color: #162133;
 }
 
+button.boxed-btn,
 a.boxed-btn {
   font-family: 'Poppins', sans-serif;
   display: inline-block;
@@ -456,6 +456,7 @@ a.bordered-btn {
   border: 2px solid #F28123;
   padding: 7px 20px;
 }
+
 
 a.read-more-btn {
   display: inline-block;
@@ -2695,14 +2696,14 @@ tr.total-data td strong {
   padding: 20px;
 }
 
-.billing-address-form form p input {
+.billing-address-form p input {
   border: 1px solid #ddd;
   padding: 15px;
   width: 100%;
   border-radius: 3px;
 }
 
-.billing-address-form form p textarea {
+.billing-address-form p textarea {
   width: 100%;
   border-radius: 3px;
   border: 1px solid #ddd;

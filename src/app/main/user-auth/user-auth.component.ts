@@ -4,6 +4,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
+import { AuthGuard, IsLogin } from 'src/app/guards/auth.guard';
 
 @Component({
   selector: 'app-user-auth',
@@ -16,54 +18,48 @@ export class UserAuthComponent implements OnInit {
   showLogin = true;
   isCheckError = false;
 
-  ngOnInit(): void {
-
-  }
-
-  constructor(private userService: UserAuthService, private builder: FormBuilder, private toastr: ToastrService, private router: Router) { }
-
   signUpForm = this.builder.group({
-    type: 'CREATE-USER',
-    role: 'Khách hàng',
-    fullname: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5)])),
+    name: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5)])),
     username: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5)])),
-    password: this.builder.control('', Validators.compose([Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,15}')])),
-    rePassword: this.builder.control('', Validators.compose([Validators.required]))
+    password: this.builder.control('', Validators.compose([Validators.required])),
+    // , Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,15}')
+    rePassword: this.builder.control('', Validators.compose([Validators.required])),
+    role: 'Khách hàng'
   })
 
   loginForm = this.builder.group({
-    type: 'LOGGIN',
     username: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5)])),
     password: this.builder.control('', Validators.compose([Validators.required])),
     isSaveLogin: this.builder.control(false)
   })
 
-  login(): void {
+  constructor(
+    private builder: FormBuilder, private authSrv: AuthService, private router: Router) { }
+
+  ngOnInit(): void {
+    if (this.authSrv.isAuthentication())
+      this.router.navigate(['']);
+  }
+
+  login = async () => {
     if (this.loginForm.valid) {
-      this.userService.LoggedIn(this.loginForm.value).subscribe(result => {
-        if (result) {
-          this.toastr.success('Đăng nhập thành công');
-          this.router.navigate(['']);
-        } else {
-          this.toastr.warning('Tài khoản hoặc mật khẩu không chính xác', 'Đăng nhập thất bại')
-        }
-      })
+      const isLogin = await this.authSrv.handleLogin(this.loginForm);
+
+      if (isLogin)
+        this.router.navigate(['/'])
     } else {
       this.isCheckError = true;
     }
   }
 
-  signUp() {
+  signUp = async () => {
     if (this.signUpForm.valid) {
-      this.userService.SignUp(this.signUpForm.value).subscribe(result => {
-        if (result) {
-          this.showLogin = true;
-          this.signUpForm.reset();
-          this.toastr.success('Đăng ký thành công');
-        } else {
-          this.toastr.warning('Tài khoản đã tồn tại');
-        }
-      })
+      const result = await this.authSrv.handleRegister(this.signUpForm);
+
+      if (result) {
+        this.showLogin = true;
+        this.signUpForm.reset();
+      }
     } else {
       this.isCheckError = true;
     }

@@ -7,6 +7,7 @@ import { UserAuthService } from '../services/user-auth.service';
 import { CartService } from '../services/cart.service';
 import { FilterService } from '../services/filter.service';
 import { CartItem } from '../models/data-types';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,7 @@ export class HeaderComponent implements OnInit {
       this.userData = user;
     }
 
-    this.userSrv.userData.subscribe(data => {
+    this.userSrv.userEmit.subscribe(data => {
       this.userData = data;
     })
 
@@ -41,10 +42,10 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(private router: Router, private productSrv: ProductService, private userSrv: UserAuthService,
-    private filterSrv: FilterService, private cartSrv: CartService) { }
+    private filterSrv: FilterService, private cartSrv: CartService, private authSrv: AuthService) { }
 
   logout() {
-    this.userSrv.Logout();
+    this.authSrv.handleLogout();
     this.router.navigate(['']);
   }
 
@@ -58,14 +59,11 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  onChangeSearch(event: Event) {
+  onChangeSearch = async (event: Event) => {
     let keySearch = (event.target as HTMLInputElement).value;
     if (keySearch.length > 0) {
       this.isSearch = true;
-      const queryString = 'name=' + '/^' + keySearch + '/';
-      this.filterSrv.filterProduct(queryString).subscribe(products => {
-        this.productsFilter = products.data;
-      })
+      this.productsFilter = await this.productSrv.handleFilterProductByName(keySearch);
     } else {
       this.isSearch = false;
     }

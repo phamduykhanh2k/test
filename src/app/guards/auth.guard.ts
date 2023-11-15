@@ -3,6 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { UserAuthService } from '../services/user-auth.service';
 import { BehaviorSubject, flatMap } from 'rxjs';
 import { Toast, ToastrService } from 'ngx-toastr';
+import { User } from '../models/user';
 
 export const authGuard: CanActivateFn = (route, state) => {
   return inject(AuthGuard).canActivate();
@@ -22,26 +23,25 @@ export class AuthGuard {
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuard {
+export class IsAdmin {
   constructor(private userSrv: UserAuthService, private router: Router, private toastr: ToastrService) { }
 
   canActivate(): boolean {
     const user = this.userSrv.GetLocalUser();
     if (user && user.role === 'Quản trị viên') {
-      this.toastr.success('Bạn đang truy cập bằng quyền quản trị viên')
       return true;
     }
-    this.toastr.warning('Bạn không có quyền truy cập')
-    this.router.navigate(['authentication']);
-    return false;
 
+    this.toastr.warning('Bạn không có quyền truy cập');
+    return false;
   };
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoginGuard {
+export class IsLogin {
+
   constructor(private toastr: ToastrService, private userSrv: UserAuthService, private router: Router) { }
 
   canActivate(): boolean {
@@ -49,7 +49,7 @@ export class LoginGuard {
     if (user)
       return true;
     else {
-      this.toastr.warning('Vui lòng đăng nhập');
+      this.toastr.error('Vui lòng đăng nhập', 'Token không hợp lệ');
       this.router.navigate(['authentication'])
       return false;
     }

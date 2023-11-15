@@ -1,1 +1,191 @@
-<p>user-manager works!</p>
+<div class="operation-btns mt-4 mb-5">
+    <button class="btn btn-success btn-lg">
+        <i class="bi bi-person-plus-fill"></i>
+    </button>
+    <button class="btn btn-primary btn-lg ml-3">
+        <i class="bi bi-funnel-fill"></i>
+    </button>
+</div>
+
+
+<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" nzTitle="Cập nhật tài khoản"
+    (nzOnClose)="close()">
+
+    <form *nzDrawerContent [formGroup]="updateUserForm">
+        <div class="row">
+            <div class="col-12 text-center">
+                <strong>Thông tin tài khoản</strong>
+                <hr>
+            </div>
+        </div>
+        <div class="row" style="display: none;">
+            <div class="col-4">
+                <label><strong>ID:</strong> <span style="color: #ff0000;">*</span></label>
+            </div>
+            <div class="col-8">
+                <input class="" type="text" name="_id" formControlName="_id">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label><strong>Tài khoản:</strong> <span style="color: #ff0000;">*</span></label>
+            </div>
+            <div class="col-8">
+                <input class="w-100" type="text" name="username" formControlName="username">
+                <div *ngIf="updateUserForm.controls['username'].errors && isCheckError">
+                    <span style="color: red;">Bắt buộc</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-4">
+                <label><strong>Vai trò:</strong> <span style="color: #ff0000;">*</span></label><br>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="role" id="role" formControlName="role"
+                        value="Quản trị viên">
+                    <label class="form-check-label" for="role">Quản trị viên</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="role" id="role2" formControlName="role"
+                        value="Khách hàng">
+                    <label class="form-check-label" for="role2">Khách hàng</label>
+                </div>
+                <div *ngIf="updateUserForm.controls['role'].errors && isCheckError">
+                    <span style="color: red;">Bắt buộc</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <label><strong>Họ và tên:</strong><span style="color: #ff0000;">*</span></label>
+            </div>
+            <div class="col-8">
+                <input class="w-100" type="text" name="name" formControlName="name">
+                <div *ngIf="updateUserForm.controls['name'].errors && isCheckError">
+                    <span style="color: red;">Tên phải có độ dài từ 5 ký tự</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <label><strong>Số điện thoại:</strong></label>
+            </div>
+            <div class="col-8">
+                <input class="w-100" type="text" name="phone" formControlName="phone">
+                <div *ngIf="updateUserForm.controls['phone'].errors && isCheckError">
+                    <span style="color: red;">Số điện thoại không hợp lệ</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <label><strong>Email:</strong></label>
+            </div>
+            <div class="col-8">
+                <input class="w-100" type="text" name="email" formControlName="email">
+                <div *ngIf="updateUserForm.controls['email'].errors && isCheckError">
+                    <span style="color: red;">Email không hợp lệ</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <label><strong>Địa chỉ:</strong></label>
+            </div>
+            <div class="col-8">
+                <input class="w-100" type="text" name="address" formControlName="address">
+                <div *ngIf="updateUserForm.controls['address'].errors && isCheckError">
+                    <span style="color: red;">Địa chỉ tối thiểu 10 ký tự</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <label><strong>Giới tính:</strong></label>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" value="Nam" formControlName="gender"
+                        id="gender" value="option1">
+                    <label class="form-check-label" for="inlineRadio1">Nam</label>
+                </div>
+                <div class="form-check form-check-inline ml-2">
+                    <input class="form-check-input" type="radio" value="Nữ" name="gender" formControlName="gender"
+                        id="gender2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2">Nữ</label>
+                </div>
+            </div>
+        </div>
+        <div style="float: right" class="mt-5">
+            <button nz-button style="margin-right: 8px;" (click)="close()">Hủy</button>
+            <button nz-button nzType="primary" (click)="onUpdate()">Cập nhật</button>
+        </div>
+    </form>
+
+</nz-drawer>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Họ và tên</th>
+                <th scope="col">Tài khoản</th>
+                <th scope="col">Email</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Tình trạng</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col" style="min-width: 180px; width: 0;">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users | paginate: {itemsPerPage, currentPage}; let index = index">
+                <th scope="row">{{index + 1}}</th>
+                <td>{{user.name}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.phone}}</td>
+                <td>
+                    <nz-tag *ngIf="user.status === 'Hoạt động'" nzColor="success">
+                        <span nz-icon nzType="check-circle"></span>
+                        <span>{{user.status}}</span>
+                    </nz-tag>
+                    <nz-tag *ngIf="user.status === 'Ngừng hoạt động'" nzColor="error">
+                        <span nz-icon nzType="close-circle"></span>
+                        <span>{{user.status}}</span>
+                    </nz-tag>
+
+                </td>
+                <td>{{user.createdAt | date: 'dd-MM-yyyy'}}</td>
+                <td>
+
+                    <button *ngIf="user.status === 'Hoạt động'" class="btn btn-warning" (click)="open(user)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button *ngIf="user.status === 'Hoạt động'" class="btn btn-dark ml-3" (nzOnConfirm)="onLock(user)"
+                        nz-popconfirm nzPopconfirmTitle="Xác nhận khóa tài khoản?" nzOkText="OK" nzCancelText="Hủy">
+                        <i class="bi bi-lock"></i>
+                    </button>
+                    <button *ngIf="user.status === 'Ngừng hoạt động'" class="btn btn-success ml-3"
+                        (nzOnConfirm)="onUnlock(user)" nz-popconfirm nzPopconfirmTitle="Xác nhận mở khóa tài khoản?"
+                        nzOkText="OK" nzCancelText="Hủy">
+                        <i class="bi bi-unlock"></i>
+                    </button>
+                    <button class="btn btn-danger ml-3" (nzOnConfirm)="onDelete(user)" nz-popconfirm
+                        nzPopconfirmTitle="Xác nhận xóa vĩnh viễn?" nzOkText="OK" nzCancelText="Hủy">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-lg-12 text-center mt-4">
+            <pagination-controls (pageChange)="currentPage = $event" nextLabel="Trước" previousLabel="Sau"
+                class="my-pagination"></pagination-controls>
+        </div>
+    </div>
+</div>

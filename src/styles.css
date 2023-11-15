@@ -1,6 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+input[type=password],
+input[type=number],
+input[type=text],
+textarea {
+    -webkit-appearance: auto;
+}
+
+
+
 html,
 body {
     font-family: 'Roboto', sans-serif;
@@ -200,4 +209,27 @@ body {
     width: 100%;
     padding: 5px 10px;
     border-radius: 10px;
+    border-width: thin;
+}
+
+.ant-rate-star>div {
+    font-size: 1.8rem;
+}
+
+.ant-comment-inner {
+    padding: 0;
+}
+
+.ant-modal-content {
+    border-radius: 10px;
+}
+
+.ant-modal-title .ng-star-inserted {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.ant-comment-content-author>span {
+    font-size: 1.4rem;
 }

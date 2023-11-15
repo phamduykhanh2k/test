@@ -12,10 +12,11 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductComponent implements OnInit {
   productList: Product[] | undefined;
 
-  constructor(private productSrv: ProductService, private cartSrv: CartService, private router: Router) { }
+  constructor(private productSrv: ProductService, private cartSrv: CartService, private router: Router) {
+    this.productSrv.getAllProduct();
+  }
 
-  ngOnInit(): void {
-    this.productSrv.GetProducts();
+  async ngOnInit(): Promise<void> {
     this.productSrv.productsEmit.subscribe(result => {
       this.productList = result;
     })

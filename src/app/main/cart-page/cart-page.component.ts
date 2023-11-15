@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartItem, ToTalSumary } from 'src/app/models/data-types';
 import { Product } from 'src/app/models/product';
 import { CartService } from 'src/app/services/cart.service';
@@ -13,7 +14,7 @@ export class CartPageComponent implements OnInit {
   totalSumary!: ToTalSumary;
   quantity = 1;
 
-  constructor(private cartSrv: CartService) { }
+  constructor(private cartSrv: CartService, private router: Router) { }
 
   ngOnInit(): void {
     const localCart = this.cartSrv.getLocalCart();
@@ -39,5 +40,12 @@ export class CartPageComponent implements OnInit {
 
   handleRemoveItemToCart = (index: number) => {
     this.cartSrv.removeItemtoCart(index);
+  }
+
+  onToCheckOut = (cart: CartItem[]) => {
+    const isValid = this.cartSrv.isValidQuantityByCart(cart);
+
+    if (isValid)
+      this.router.navigate(['/checkout']);
   }
 }

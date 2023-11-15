@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Category } from 'src/app/models/category';
@@ -18,46 +18,41 @@ export class ProductManagerComponent implements OnInit {
   page: number = 1;
   products: Product[] = [];
   categories: Category[] = [];
-
-  productForm = this.builder.group({
-    id: '',
-    name: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(1000)])),
-    image: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(10)])),
-    quantity: this.builder.control(0, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(10), Validators.min(1)])),
-    price: this.builder.control(0, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.min(500)])),
-    categories: this.builder.control('', Validators.required),
-    description: ''
-  })
+  productForm: FormGroup;
 
   constructor(private productSrv: ProductService, private builder: FormBuilder,
-    private toastr: ToastrService, private router: Router, private categorySrv: CategoryService) { }
+    private toastr: ToastrService, private router: Router, private categorySrv: CategoryService) {
+
+    this.productForm = this.builder.group({
+      _id: this.builder.control(''),
+      name: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(250)])),
+      image: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(10)])),
+      quantity: this.builder.control(0, Validators.compose([Validators.required, Validators.min(1), Validators.max(1000)])),
+      price: this.builder.control(0, Validators.compose([Validators.required, Validators.min(500), Validators.maxLength(2000000)])),
+      categories: this.builder.control('', Validators.required),
+      description: this.builder.control('')
+    })
+
+    this.categorySrv.getAllCategory();
+    this.productSrv.getAllProduct();
+  }
 
   ngOnInit(): void {
-    // Lấy danh sách danh mục sản phẩm
-    this.categorySrv.getCategories();
-    this.categorySrv.categories.subscribe(result => {
+    this.categorySrv.categoriesEmit.subscribe(result => {
       this.categories = result;
     })
 
-    // Lấy danh sách sản phẩm
-    this.productSrv.GetProducts();
     this.productSrv.productsEmit.subscribe(result => {
       this.products = result;
     })
   }
 
-  createdProduct() {
-    if (this.productForm.valid) {
-
-      console.warn(this.productForm.value)
-      this.productSrv.CreateProduct(this.productForm.value).subscribe(result => {
-        if (result) {
-          this.productForm.reset();
-          this.toastr.success('Thêm thành công');
-        } else {
-          this.toastr.warning('Có vẻ hệ thống đang gặp sự cố', 'Thêm thất bại');
-        }
-      })
+  handleCreateProduct = async () => {
+    if (this.productForm!.valid) {
+      const isCreated = await this.productSrv.createProduct(this.productForm);
+      if (isCreated) {
+        this.productForm.reset();
+      }
     } else {
       this.isError = true;
     }
@@ -65,7 +60,7 @@ export class ProductManagerComponent implements OnInit {
 
   getProduct(item: Product) {
     this.productForm.setValue({
-      id: item._id,
+      _id: item._id!,
       name: item.name,
       image: item.image,
       quantity: item.quantity,
@@ -77,25 +72,20 @@ export class ProductManagerComponent implements OnInit {
     this.formType = 'Edit';
   }
 
-  updateProduct() {
+  updateProduct = async () => {
     if (this.productForm.valid) {
-      this.productSrv.UpdateProduct(this.productForm.value).subscribe(result => {
-        if (result) {
-          this.productForm.reset();
-          this.formType = '';
-          this.toastr.success('Sửa thành công');
-        } else {
-          this.toastr.warning('Có vẻ hệ thống đang gặp sự cố', 'Sửa thất bại');
-        }
-      })
+      const isUpdated = await this.productSrv.updateProduct(this.productForm);
+
+      if (isUpdated) {
+        this.productForm.reset();
+        this.formType = '';
+      }
     } else {
       this.isError = true;
     }
   }
 
-  deleteProduct(item: Product) {
-    this.productSrv.DeleteProduct(item._id).subscribe(result => {
-      console.warn(result)
-    })
+  deleteProduct = (item: Product) => {
+    this.productSrv.deleteProduct(item._id!);
   }
 }

@@ -1,0 +1,16 @@
+th {
+    text-align: center;
+}
+
+tr {
+    text-align: center;
+}
+
+.ant-tag {
+    font-size: 1rem;
+    padding: 5px;
+    align-items: center;
+    display: inline-flex;
+    max-width: 150px;
+    justify-content: center;
+}

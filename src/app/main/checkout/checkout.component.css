@@ -1,0 +1,8 @@
+.billing-address-form p {
+    margin: 0;
+}
+
+button.boxed-btn {
+    border-radius: 50px;
+    border: none;
+}

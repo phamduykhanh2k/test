@@ -19,3 +19,9 @@
 .background-btn-choosed button {
     color: #fff;
 }
+
+.product-filters button:focus-visible,
+.product-filters button:focus {
+    outline: none;
+    box-shadow: none;
+}
