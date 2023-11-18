@@ -23,7 +23,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let voucher of vouchers; let index = index" class="text-center">
+            <tr *ngFor="let voucher of vouchers | paginate: { itemsPerPage: 5, currentPage: page }; let index = index "
+                class="text-center">
                 <th scope="row">{{index + 1}}</th>
                 <td>{{voucher.code}}</td>
                 <td>{{voucher.discount | currency: 'VND'}}</td>
@@ -41,76 +42,86 @@
                         <i class="bi bi-pencil-square"></i>
                     </button>
                     <button *ngIf="voucher.status === 'Còn hiệu lực'" class="btn btn-danger ml-3"
-                        (nzOnConfirm)="onChangeStatus(voucher)" nz-popconfirm
+                        (nzOnConfirm)="onChangeStatus(voucher, 'Hết hiệu lực')" nz-popconfirm
                         nzPopconfirmTitle="Bạn chắc chắn muốn xóa chứ?" nzOkText="OK" nzCancelText="Không">
                         <i class="bi bi-trash-fill"></i>
                     </button>
                     <button *ngIf="voucher.status == 'Hết hiệu lực'" class="btn btn-primary ml-3"
-                        (nzOnConfirm)="onChangeStatus(voucher)" nz-popconfirm nzPopconfirmTitle="Xác nhận khôi phục?"
-                        nzOkText="OK" nzCancelText="Hủy">
+                        (nzOnConfirm)="onChangeStatus(voucher, 'Còn hiệu lực')" nz-popconfirm
+                        nzPopconfirmTitle="Xác nhận khôi phục?" nzOkText="OK" nzCancelText="Hủy">
                         <i class="bi bi-arrow-repeat"></i>
                     </button>
                 </td>
+                <nz-modal [(nzVisible)]="isVisible" [nzTitle]="nzTitle" (nzOnCancel)="onCancel()"
+                    (nzOnOk)="onSubmitForm(voucher)" [nzAutofocus]="null" [nzOkText]="nzOkText" nzCancelText="Hủy">
+                    <ng-container *nzModalContent>
+                        <form [formGroup]="voucherForm">
+                            <div class="form-row align-items-center">
+                                <div class="col-12">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i style="color: #2563eb;" class="bi bi-gift"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" id="inlineFormInputGroup"
+                                            placeholder="Mã khuyến mãi" formControlName="code">
+                                    </div>
+                                    <div *ngIf="voucherForm.controls['code'].errors && isSubmitted" class="mt-1">
+                                        <span style="color: red;">Tên người dùng tối thiểu 5 ký tự</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i style="color: #f59e0b;" class="bi bi-coin"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="form-control" id="inlineFormInputGroup"
+                                                    placeholder="Số tiền giảm" formControlName="discount">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i style="color: #84cc16;" class="bi bi-infinity"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="form-control" id="inlineFormInputGroup"
+                                                    placeholder="Số lượng" formControlName="quantity">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="sr-only">Ngày kết thúc</label>
+                                            <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"
+                                                nzPlaceHolder="Ngày kết thúc" [nzDisabledDate]="disabledDate"
+                                                [nzDefaultPickerValue]="date"
+                                                [ngModelOptions]="{standalone: true}"></nz-date-picker>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="voucherForm.controls['discount'].errors && isSubmitted" class="mt-2">
+                                        <span style="color: red;">Giá tiền tối thiểu 500đ</span>
+                                    </div>
+                                    <div *ngIf="voucherForm.controls['quantity'].errors && isSubmitted">
+                                        <span style="color: red;">Số lượng tối thiểu 1</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <textarea class="form-control" name="" id="" rows="5"
+                                        placeholder="Mô tả phiếu giảm giá" formControlName="description"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </ng-container>
+                </nz-modal>
             </tr>
         </tbody>
     </table>
-    <nz-modal [(nzVisible)]="isVisible" [nzTitle]="nzTitle" (nzOnCancel)="onCancel()" (nzOnOk)="onUpdated()"
-        [nzAutofocus]="null" [nzOkText]="nzOkText" nzCancelText="Hủy">
-        <ng-container *nzModalContent>
-            <form [formGroup]="voucherForm">
-                <div class="form-row align-items-center">
-                    <div class="col-12">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i style="color: #2563eb;" class="bi bi-gift"></i>
-                                </div>
-                            </div>
-                            <input type="text" class="form-control" id="inlineFormInputGroup"
-                                placeholder="Mã khuyến mãi" formControlName="code">
-                        </div>
-                        <div *ngIf="voucherForm.controls['code'].errors && isSubmitted" class="mt-1">
-                            <span style="color: red;">Tên người dùng tối thiểu 5 ký tự</span>
-                        </div>
-                    </div>
-                    <div class="col-12 mt-3">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i style="color: #f59e0b;" class="bi bi-coin"></i>
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroup"
-                                        placeholder="Số tiền giảm" formControlName="discount">
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i style="color: #84cc16;" class="bi bi-infinity"></i>
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroup"
-                                        placeholder="Số lượng" formControlName="quantity">
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <label class="sr-only">Ngày kết thúc</label>
-                                <nz-date-picker [(ngModel)]="minDate" (ngModelChange)="onChange($event)"
-                                    nzPlaceHolder="Ngày kết thúc" [nzDisabledDate]="disabledDate"
-                                    [nzDefaultPickerValue]="minDate"
-                                    [ngModelOptions]="{standalone: true}"></nz-date-picker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 mt-3">
-                        <textarea class="form-control" name="" id="" rows="5" placeholder="Mô tả phiếu giảm giá"
-                            formControlName="description"></textarea>
-                    </div>
-                </div>
-            </form>
-        </ng-container>
-    </nz-modal>
+
+    <div class="pagination justify-content-center">
+        <pagination-controls (pageChange)="page = $event" previousLabel="Sau" nextLabel="Trước"></pagination-controls>
+    </div>

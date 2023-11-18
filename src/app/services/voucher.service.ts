@@ -3,6 +3,7 @@ import { ObservableService } from './observable.service';
 import { ToastrService } from 'ngx-toastr';
 import { FilterService } from './filter.service';
 import { BehaviorSubject } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class VoucherService {
   constructor(
     private observableSrv: ObservableService,
     private toastr: ToastrService,
-    private filterSrv: FilterService) { }
+    private filterSrv: FilterService,
+    private nzMessageSrv: NzMessageService) { }
 
   applyVoucher = async (data: any) => {
     let result = await this.observableSrv.post(this.schemaName, data);
@@ -46,5 +48,30 @@ export class VoucherService {
       this.toastr.error(result?.errorMessage);
       return null;
     }
+  }
+
+  createVoucher = async (data: any) => {
+    let result = await this.observableSrv.post(this.schemaName, data);
+
+    if (result && result.EC === 0) {
+      this.nzMessageSrv.success('Thêm thành công');
+      return result.data;
+    } else {
+      this.nzMessageSrv.error('Thêm thất bại');
+      return null;
+    }
+  }
+
+  updateVoucher = async (data: any) => {
+    let result = await this.observableSrv.update(this.schemaName, data);
+
+    if (result && result.EC === 0) {
+      this.nzMessageSrv.success('Cập nhật thành công');
+      return data;
+    } else {
+      this.nzMessageSrv.error('Cập nhật thất bại');
+      return null;
+    }
+
   }
 }
