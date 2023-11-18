@@ -7,6 +7,7 @@ import { query } from '@angular/animations';
 import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { Order } from 'src/app/models/data-types';
 import { FeedbackService } from 'src/app/services/feedback.service';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-orders',
@@ -18,6 +19,11 @@ export class OrdersComponent {
   user: User
   currentPage = 1;
   itemsPerPage = 3;
+
+  constructor(private orderSrv: OrderService,
+    private userSrv: UserAuthService,
+    private feedbackSrv: FeedbackService,
+    private paymentSrv: PaymentService) { }
 
   ngOnInit(): void {
     this.user = this.userSrv.GetLocalUser()!;
@@ -31,24 +37,28 @@ export class OrdersComponent {
     }
   }
 
-  constructor(private orderSrv: OrderService, private userSrv: UserAuthService, private feedbackSrv: FeedbackService) { }
   isVisible = false;
-  tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
+  tooltips = ['Quá tệ', 'Dở', 'Bình thường', 'Tốt', 'Tuyệt vời'];
   score = 3;
   comment = '';
+  productId = '';
+  orderId = '';
 
-  showModal(): void {
+  showModal(orderId: string, productId: string): void {
+    this.orderId = orderId;
+    this.productId = productId;
     this.isVisible = true;
   }
 
-  onCreateFeedback = async (orderId: string, productId: string) => {
+  onCreateFeedback = async () => {
     const data = {
-      order: orderId,
+      order: this.orderId,
       user: this.user._id,
-      product: productId,
+      product: this.productId,
       score: this.score,
       note: this.comment
     }
+
     const result = await this.feedbackSrv.createFeedback(data);
 
     if (result) {
@@ -58,5 +68,18 @@ export class OrdersComponent {
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+
+  onPayment = async (order: Order) => {
+    let data = {
+      _id: order._id,
+      totalPrice: order.totalPrice
+    }
+
+    let payUrl = await this.paymentSrv.createPayment(data);
+
+    if (payUrl) {
+      window.location.href = payUrl;
+    }
   }
 }

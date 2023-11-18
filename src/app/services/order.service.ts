@@ -21,17 +21,25 @@ export class OrderService {
 
   constructor(private http: HttpClient,
     private observableSrv: ObservableService,
-    private toastr: ToastrService,
     private cartSrv: CartService,
-    private nzMessageService: NzMessageService
   ) { }
 
   GetAllOrder = async () => {
-    return await this.observableSrv.getAll(this.schemaName);
+    let result = await this.observableSrv.getAll(this.schemaName);
+
+    if (result && result.EC === 0) {
+      return result.data;
+    } else {
+
+    }
   }
 
   getOrder = async (id: string) => {
-    return await this.observableSrv.get(this.schemaName, id);
+    let result = await this.observableSrv.get(this.schemaName, id);
+    if (result && result.EC === 0) {
+      return result.data;
+
+    }
   }
 
   GetOrderByUserId(userId: string) {
@@ -45,47 +53,32 @@ export class OrderService {
     });
   }
 
-  createOrder = async (user: User, checkoutForm: FormGroup, totalSumary: ToTalSumary, cart: CartItem[]) => {
-    const formValue = checkoutForm.value;
-    const order: Order = {
-      userId: user!._id || '',
-      name: formValue.name || '',
-      address: formValue.address || '',
-      note: formValue.note || '',
-      phone: formValue.phone || '',
-      paymentMethod: formValue.paymentMethod || '',
-      shippingCost: totalSumary.shippingCost,
-      totalPrice: totalSumary.total,
-      cart: cart,
-      status: "Chờ xác nhận"
-    }
+  createOrder = async (data: any) => {
+    const result = await this.observableSrv.post(this.schemaName, data);
 
-    const result = await this.observableSrv.post(this.schemaName, order);
-
-    if (result) {
-      this.toastr.success("Đặt hàng thành công");
+    if (result && result.EC === 0) {
       localStorage.removeItem('cart');
-      this.cartSrv.removeLocalCart();
-      return true;
+      localStorage.removeItem('voucher');
+      this.cartSrv.cartEmit.emit([]);
+      return result.data;
     }
-
-    this.toastr.error('Có lẽ hệ thống đang gặp sự cố', 'Đặt hàng thất bại');
-    return false;
+    return null;
   }
 
-  updateOrder = async (type: string, order: Order) => {
-    const data = { type, ...order };
+  updateOrder = async (status: string, order: any) => {
+    const data = { ...order, status };
+    console.log(data)
     const result = await this.observableSrv.update(this.schemaName, data);
 
-    if (result.modifiedCount > 0) {
-      const orders = await this.observableSrv.getAll(this.schemaName);
-      this.orders.emit(orders);
-      this.nzMessageService.success('Hành động chạy thành công');
+    if (result && result.EC === 0 && result.data.modifiedCount > 0) {
+      const result = await this.observableSrv.getAll(this.schemaName);
 
-    } else {
-      this.nzMessageService.error('Hành động chạy thất bại');
+      if (result && result.EC === 0) {
+        this.orders.emit(result.data);
+        return true;
+      }
+
     }
+    return false;
   }
-
-
 }

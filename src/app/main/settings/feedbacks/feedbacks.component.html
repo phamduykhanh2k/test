@@ -1,25 +1,53 @@
-<h5 class="card-header">Danh sách đánh giá</h5>
+<div class="feedbacks">
+    <h2 class="setting-title text-center">Lịch sử đánh giá</h2>
 
-<div class="card" *ngFor="let feedback of feedbacks">
+    <div class="my-4">
+        <div class="card mt-2" *ngFor="let feedback of feedbacks">
 
-    <div class="card-body">
-        <div class="row">
-            <div class="col-3">
-                <img src="{{feedback.product.image}}" alt="">
-            </div>
-            <div class="col-9">
-                <h5 class="card-title">{{feedback.product.name}}</h5>
-                <nz-comment-content>
-                    <strong class="mr-3">Điểm đánh giá:</strong>
-                    <nz-rate [nzDisabled]="true" [ngModel]="feedback.score"></nz-rate>
-                    <p>
-                        <strong class="mr-3">Nội dung:</strong>{{feedback.note}}
-                    </p>
-                </nz-comment-content>
-                <div class="mt-3">
-                    <a href="#" class="btn btn-dark">Sửa đánh giá</a>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="{{feedback.product.image}}" alt="">
+                    </div>
+                    <div class="col-9">
+                        <h5 class="card-title">{{feedback.product.name}}</h5>
+                        <nz-comment-content>
+                            <strong class="mr-3">Điểm đánh giá:</strong>
+                            <nz-rate [nzDisabled]="true" [ngModel]="feedback.score"></nz-rate>
+                            <p>
+                                <strong class="mr-3">Nội dung:</strong>{{feedback.note}}
+                            </p>
+                        </nz-comment-content>
+                        <div class="mt-3">
+                            <button (click)="showModal(feedback)" class="btn btn-dark">Sửa đánh giá</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="Đánh giá của bạn" [nzContent]="modalContent"
+            [nzFooter]="modalFooter" (nzOnCancel)="isVisible = false" [nzAutofocus]="null">
+
+            <ng-template #modalContent>
+                <strong class="mr-4">Đánh giá</strong>
+                <input type="text" name="" [(ngModel)]="feedbackId" style="display: none;">
+                <nz-rate [(ngModel)]="score" [nzTooltips]="tooltips"></nz-rate>
+                <span *ngIf="score" class="ant-rate-text">{{ score ? tooltips[score - 1] : '' }}</span>
+                <div class="comment mt-3">
+                    <strong>Bình luận:</strong>
+                    <nz-comment>
+                        <nz-comment-content>
+                            <textarea class="w-100" [(ngModel)]="comment" nz-input rows="4"></textarea>
+                        </nz-comment-content>
+                    </nz-comment>
+                </div>
+            </ng-template>
+
+            <ng-template #modalFooter>
+                <button (click)="onUpdated()" class="btn btn-dark btn-lg w-100 rounded-pill">Sửa đánh
+                    giá</button>
+            </ng-template>
+        </nz-modal>
     </div>
+
 </div>

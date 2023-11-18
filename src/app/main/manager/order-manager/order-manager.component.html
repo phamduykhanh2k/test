@@ -36,29 +36,38 @@
                 <td>{{item.totalPrice | currency: 'VND'}}</td>
                 <td>{{item.createdAt | date: 'dd-MM-yyyy'}}</td>
                 <td>
-                    <span *ngIf="item.status === 'Đã xác nhận'" class="badge badge-success p-2"
-                        style="font-size: 0.9rem;">{{item.status}}</span>
+                    <span *ngIf="item.status === 'Chờ thanh toán'" class="badge badge-primary p-2"
+                        style="font-size: 0.9rem;">Chờ thanh toán</span>
+                    <span *ngIf="item.status === 'Hoàn thành'" class="badge badge-success p-2"
+                        style="font-size: 0.9rem;">Hoàn thành</span>
                     <span *ngIf="item.status === 'Chờ xác nhận'" class="badge badge-warning p-2"
-                        style="font-size: 0.9rem;">{{item.status}}</span>
+                        style="font-size: 0.9rem;">Chờ xác nhận</span>
                     <span *ngIf="item.status === 'Hủy đơn hàng'" class="badge badge-danger p-2"
-                        style="font-size: 0.9rem;">{{item.status}}</span>
+                        style="font-size: 0.9rem;">Hủy đơn hàng</span>
                 </td>
                 <td class="btn-action">
                     <button *ngIf="item.status === 'Chờ xác nhận'" class="btn btn-success" nz-popconfirm
                         nzPopconfirmTitle="Xác nhận đơn hàng?" nzOkText="OK" nzCancelText="Hủy"
-                        (nzOnConfirm)="onAction('CONFIRM', item)">
+                        (nzOnConfirm)="onAction('Chờ thanh toán', item)">
                         <i class="bi bi-check-circle"></i>
                     </button>
 
-                    <button *ngIf="item.status == 'Chờ xác nhận'" class="btn btn-danger ml-3" nz-popconfirm
-                        nzPopconfirmTitle="Xác nhận hủy?" nzOkText="OK" nzCancelText="Hủy"
-                        (nzOnConfirm)="onAction('CANCEL', item)">
+                    <button *ngIf="item.status === 'Chờ thanh toán'" class="btn btn-primary" nz-popconfirm
+                        nzPopconfirmTitle="Xác nhận thanh toán?" nzOkText="OK" nzCancelText="Hủy"
+                        (nzOnConfirm)="onAction('Hoàn thành', item)">
+
+                        <i class="bi bi-coin"></i>
+                    </button>
+
+                    <button *ngIf="item.status == 'Chờ thanh toán' || item.status == 'Chờ xác nhận'"
+                        class="btn btn-danger ml-3" nz-popconfirm nzPopconfirmTitle="Xác nhận hủy?" nzOkText="OK"
+                        nzCancelText="Hủy" (nzOnConfirm)="onAction('Hủy đơn hàng', item)">
                         <i class="bi bi-x-circle"></i>
                     </button>
 
                     <button *ngIf="item.status == 'Hủy đơn hàng'" class="btn btn-primary ml-3"
-                        (nzOnConfirm)="onAction('RESTORE', item)" nz-popconfirm nzPopconfirmTitle="Xác nhận khôi phục?"
-                        nzOkText="OK" nzCancelText="Hủy">
+                        (nzOnConfirm)="onAction('Chờ thanh toán', item)" nz-popconfirm
+                        nzPopconfirmTitle="Xác nhận khôi phục?" nzOkText="OK" nzCancelText="Hủy">
                         <i class="bi bi-arrow-repeat"></i>
                     </button>
                 </td>

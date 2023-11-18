@@ -9,7 +9,6 @@ textarea {
 }
 
 
-
 html,
 body {
     font-family: 'Roboto', sans-serif;
@@ -189,7 +188,7 @@ body {
 }
 
 .setting-title {
-    font-size: 1.6rem;
+    font-size: 2.2rem;
     margin-bottom: 0;
 }
 
@@ -232,4 +231,14 @@ body {
 
 .ant-comment-content-author>span {
     font-size: 1.4rem;
+}
+
+.ant-modal-close-x:focus-visible {
+    outline: none;
+}
+
+.nz-modal-content-custom {
+    min-height: 200px;
+    max-height: 350px;
+    overflow: auto;
 }

@@ -16,12 +16,14 @@
         <div class="col-12 d-flex align-items-center">
             <h2 class="title m-0">Thông tin đơn hàng #{{order._id}}</h2>
             <div class="ml-3">
-                <span *ngIf="order.status === 'Đã xác nhận'" class="badge badge-success p-2"
-                    style="font-size: 0.9rem;">{{order.status}}</span>
+                <span *ngIf="order.status === 'Chờ thanh toán'" class="badge badge-primary p-2"
+                    style="font-size: 0.9rem;">Chờ thanh toán</span>
+                <span *ngIf="order.status === 'Hoàn thành'" class="badge badge-success p-2"
+                    style="font-size: 0.9rem;">Hoàn thành</span>
                 <span *ngIf="order.status === 'Chờ xác nhận'" class="badge badge-warning p-2"
-                    style="font-size: 0.9rem;">{{order.status}}</span>
+                    style="font-size: 0.9rem;">Chờ xác nhận</span>
                 <span *ngIf="order.status === 'Hủy đơn hàng'" class="badge badge-danger p-2"
-                    style="font-size: 0.9rem;">{{order.status}}</span>
+                    style="font-size: 0.9rem;">Hủy đơn hàng</span>
             </div>
         </div>
     </div>
@@ -94,23 +96,24 @@
                         <tbody>
                             <tr class="total-data">
                                 <td><strong>Mã giảm giá: </strong></td>
-                                <td>(Đang phát triển)</td>
+                                <td *ngIf="order.voucher">{{order.voucher.code}}</td>
+                                <td *ngIf="!order.voucher">Không có</td>
                             </tr>
                             <tr class="total-data">
                                 <td><strong>Tổng giá trị sản phẩm: </strong></td>
-                                <td>{{order.totalPrice - order.shippingCost | currency: 'VND'}}</td>
+                                <td>{{totalSumary.subTotal | currency: 'VND'}}</td>
                             </tr>
                             <tr class="total-data">
                                 <td><strong>Giảm giá: </strong></td>
-                                <td>(Đang phát triển)</td>
+                                <td>{{totalSumary.discount | currency: 'VND'}}</td>
                             </tr>
                             <tr class="total-data">
                                 <td><strong>Phí vận chuyển: </strong></td>
-                                <td>{{order.shippingCost | currency: 'VND'}}</td>
+                                <td>{{totalSumary.shippingCost | currency: 'VND'}}</td>
                             </tr>
                             <tr class="total-data">
                                 <td><strong>Tổng thanh toán: </strong></td>
-                                <td>{{order.totalPrice | currency: 'VND'}}</td>
+                                <td>{{totalSumary.total | currency: 'VND'}}</td>
                             </tr>
                         </tbody>
                     </table>

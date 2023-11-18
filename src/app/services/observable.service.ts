@@ -19,7 +19,7 @@ export class ObservableService {
       if (err.status === 401)
         this.toastr.error('Vui lòng đăng nhập', 'Token không hợp lệ');
     });
-    return value?.data;
+    return value;
   }
 
   getAll = (schemaName: string) => {

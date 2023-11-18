@@ -1,0 +1,11 @@
+.tab-link-custom {
+    color: #007bff;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.tab-link-custom.active,
+.tab-link-custom::before,
+.tab-link-custom:hover {
+    color: #F28123;
+}

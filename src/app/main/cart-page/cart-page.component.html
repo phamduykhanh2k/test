@@ -12,7 +12,7 @@
 </div>
 <!-- end breadcrumb section -->
 
-<div *ngIf="cart.length > 0" class="cart-section mt-150 mb-150">
+<div *ngIf="cart.length > 0" class="cart-section mt-5 mb-150">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-12">
@@ -36,8 +36,9 @@
                                 <td class="product-name">{{item.product.name}}</td>
                                 <td class="product-price">{{item.product.price | currency: "VND"}}</td>
                                 <td class="product-quantity">
-                                    <input type="number" value="{{item.quantity}}" (input)="onchangeQuantity($event, i)"
-                                        min="1" max="100" onKeyPress="if(this.value.length==4) return false;" />
+                                    <input class="text-center" type="number" value="{{item.quantity}}"
+                                        (input)="onchangeQuantity($event, i)" min="1" max="100"
+                                        onKeyPress="if(this.value.length==4) return false;" />
                                 </td>
                                 <td class="product-total">{{item.product.price * item.quantity | currency: "VND"}}</td>
                             </tr>
@@ -81,13 +82,198 @@
                 </div>
 
                 <div class="coupon-section">
-                    <h3>Mã giảm giá (Đang phát triển)</h3>
+                    <h3>Mã giảm giá</h3>
                     <div class="coupon-form-wrap">
-                        <form action="index.html">
-                            <p><input type="text" placeholder="Nhập mã giảm giá" disabled></p>
-                            <p><input type="submit" disabled value="Áp dụng"></p>
-                        </form>
+                        <!-- <p><input type="text" placeholder="Nhập mã giảm giá" #voucher></p>
+                        <a class="boxed-btn" (click)="onApplyVoucher(voucher.value)">Áp dụng</a> -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <div class="row align-items-center">
+                                            <div class="col-3">
+                                                <img class="voucher-image" src="assets/img/voucher.jfif" alt="">
+                                            </div>
+                                            <div class="col-9">
+                                                <h5 class="card-title">Giảm {{voucher.discount | currency:
+                                                    'VND'}}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 d-flex justify-content-end align-items-center">
+                                        <i nz-popover nzPopoverPlacement="leftTop" [nzPopoverContent]="infoVoucher"
+                                            class="bi bi-info-circle" style="color: blue; font-size: medium;"></i>
+                                        <button *ngIf="selectedVoucher !== voucher.code"
+                                            (click)="onApplyVoucher(voucher.code)" class="btn btn-primary ml-3">Áp
+                                            dụng</button>
+                                        <button *ngIf="selectedVoucher === voucher.code"
+                                            (click)="onCancelApplyVoucher()" class="btn btn-primary ml-3">Bỏ
+                                            chọn</button>
+                                    </div>
+                                    <ng-template #infoVoucher>
+                                        <div style="width: 350px;">
+                                            <div class="container">
+                                                <div class="row py-2" style="background-color: #f1f5f9;">
+                                                    <div class="col-5">
+                                                        <span style="color: #aaa;"><strong>Mã:</strong></span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <span><strong>{{voucher.code}}</strong></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row py-2">
+                                                    <div class="col-5">
+                                                        <span style="color: #aaa;">Giảm giá:</span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <span>{{voucher.discount | currency: 'VND'}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row py-2">
+                                                    <div class="col-5">
+                                                        <span style="color: #aaa;">Số lượng:</span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <span>{{voucher.quantity}} còn lại</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row py-2">
+                                                    <div class="col-5">
+                                                        <span style="color: #aaa;">Hạn sử dụng:</span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <span style="color: green;">Đến
+                                                            {{voucher.expired_date | date: 'dd-MM-yyyy'}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row py-2">
+                                                    <div class="col-5">
+                                                        <span style="color: #aaa;">Mô tả:</span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <span>{{voucher.description}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <a style="font-size: 1.2rem; color: #F28123;">
+                                <i class="bi bi-gift"></i>
+                                <span (click)="onChangeModalVoucher()" class="ml-2">Chọn hoặc nhập khuyến mãi
+                                    khác</span>
+                            </a>
+                        </div>
                     </div>
+                    <nz-modal [(nzVisible)]="isVisibleModalVoucher" nzTitle="Khuyến mãi của bạn"
+                        (nzOnCancel)="onChangeModalVoucher()" [nzCancelText]="null" [nzOkText]="null"
+                        [nzAutofocus]="null">
+                        <ng-container *nzModalContent>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="input-group pl-0 col-10">
+                                        <div class="input-group-prepend">
+                                            <span style="color: #2563eb;" class="input-group-text" id="basic-addon1"><i
+                                                    class="bi bi-gift"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Nhập mã khuyến mãi"
+                                            [(ngModel)]="inputCode">
+                                    </div>
+                                    <div class="col-2 px-0">
+                                        <button [disabled]="inputCode.length > 0 ? false : true"
+                                            (click)="onApplyVoucher(inputCode)" class="btn btn-primary">Áp
+                                            dụng</button>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <h3 style="font-size: 1.2rem;">Mã giảm giá</h3>
+                                    <div class="coupon-form-wrap nz-modal-content-custom">
+                                        <div *ngFor="let voucher of vouchers" class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-7">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-3">
+                                                                <img src="assets/img/voucher.jfif" alt="">
+                                                            </div>
+                                                            <div class="col-9">
+                                                                <h5 class="card-title">Giảm {{voucher.discount |
+                                                                    currency:
+                                                                    'VND'}}</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5 d-flex justify-content-end align-items-center">
+                                                        <i nz-popover nzPopoverPlacement="leftTop"
+                                                            [nzPopoverContent]="infoVoucher" class="bi bi-info-circle"
+                                                            style="color: blue; font-size: medium;"></i>
+                                                        <div>
+                                                            <button *ngIf="selectedVoucher !== voucher.code"
+                                                                (click)="onApplyVoucher(voucher.code)"
+                                                                class="btn btn-primary ml-3">Áp dụng</button>
+                                                            <button *ngIf="selectedVoucher === voucher.code"
+                                                                (click)="onCancelApplyVoucher()"
+                                                                class="btn btn-primary ml-3">Bỏ chọn</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ng-template #infoVoucher>
+                                                <div style="width: 350px;">
+                                                    <div class="container">
+                                                        <div class="row py-2" style="background-color: #f1f5f9;">
+                                                            <div class="col-5">
+                                                                <span style="color: #aaa;"><strong>Mã:</strong></span>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <span><strong>{{voucher.code}}</strong></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-2">
+                                                            <div class="col-5">
+                                                                <span style="color: #aaa;">Giảm giá:</span>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <span>{{voucher.discount | currency: 'VND'}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-2">
+                                                            <div class="col-5">
+                                                                <span style="color: #aaa;">Số lượng:</span>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <span>{{voucher.quantity}} còn lại</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-2">
+                                                            <div class="col-5">
+                                                                <span style="color: #aaa;">Hạn sử dụng:</span>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <span style="color: green;">Đến
+                                                                    {{voucher.expired_date | date: 'dd-MM-yyyy'}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-2">
+                                                            <div class="col-5">
+                                                                <span style="color: #aaa;">Mô tả:</span>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <span>{{voucher.description}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </nz-modal>
                 </div>
             </div>
         </div>

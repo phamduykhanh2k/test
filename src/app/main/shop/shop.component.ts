@@ -51,11 +51,12 @@ export class ShopComponent implements OnInit {
       this.router.navigate(["authentication"]);
   }
 
-  filter(id: string) {
+  filter = async (id: string) => {
     this.cateChoosed = id;
-    const queryString = 'categories=' + id;
-    // this.FilterSrv.filterProduct(queryString).subscribe(result => {
-    //   this.productList = result.data;
-    // });
+    let result = await this.productSrv.handleFilterProductByCategory(id);
+
+    if (result && result.EC === 0) {
+      this.productList = result.data;
+    }
   }
 }

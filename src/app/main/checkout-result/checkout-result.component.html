@@ -1,0 +1,22 @@
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Thực phẩm xanh và sạch</p>
+                    <h1>Đặt hàng</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nz-result nzStatus="success" nzTitle="Đặt hàng thành công"
+    nzSubTitle="Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi. Đơn hàng sẽ được giao đến bạn một cách sớm nhất.">
+    <div nz-result-extra>
+        <div class="cart-buttons">
+            <a class="boxed-btn btn-first" routerLink="/orders/{{orderId}}">Xem đơn hàng</a>
+            <a class="boxed-btn btn-second" routerLink="/shop">Mua sắm tiếp</a>
+        </div>
+    </div>
+</nz-result>

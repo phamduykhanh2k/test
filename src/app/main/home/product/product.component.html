@@ -10,15 +10,18 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-4 col-md-6 text-center" *ngFor="let item of productList">
+        <div class="col-lg-4 col-md-6 text-center" *ngFor="let item of productList | slice: 1">
             <div class="single-product-item">
                 <div class="product-image">
                     <a class="d-block" routerLink="/products/{{item._id}}"><img src="{{item.image}}" alt=""></a>
                 </div>
                 <h3>{{item.name}}</h3>
                 <p class="product-price"><span>Giá theo kg</span> {{item.price | currency: 'VND'}} </p>
-                <a (click)="singleAddToCart(item)" class="cart-btn"><i class="fas fa-shopping-cart"></i>Thêm vào giỏ
+                <a *ngIf="item.quantity > 0" (click)="singleAddToCart(item)" class="cart-btn"><i
+                        class="fas fa-shopping-cart"></i>Thêm vào giỏ
                     hàng</a>
+                <span *ngIf="item.quantity <= 0" class="badge" style="color: red; font-size: 1.4rem;">Hết
+                    hàng</span>
             </div>
         </div>
     </div>

@@ -13,6 +13,9 @@ export class OrderManagerComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
 
+  constructor(private orderSrv: OrderService,
+    private nzMessageService: NzMessageService) { }
+
   async ngOnInit(): Promise<void> {
     this.orders = await this.orderSrv.GetAllOrder();
 
@@ -21,9 +24,14 @@ export class OrderManagerComponent implements OnInit {
     })
   }
 
-  constructor(private orderSrv: OrderService) { }
+  onAction = async (status: string, order: Order) => {
+    console.log(status)
+    const isUpdated = await this.orderSrv.updateOrder(status, order);
 
-  onAction = (type: string, order: Order) => {
-    this.orderSrv.updateOrder(type, order);
+    if (isUpdated) {
+      this.nzMessageService.success('Hành động chạy thành công');
+    } else {
+      this.nzMessageService.error('Hành động chạy thất bại');
+    }
   }
 }

@@ -8,11 +8,9 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { ObservableService } from '../services/observable.service';
 import { Router } from '@angular/router';
 import { UserAuthService } from '../services/user-auth.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

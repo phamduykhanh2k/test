@@ -64,6 +64,7 @@ export class HeaderComponent implements OnInit {
     if (keySearch.length > 0) {
       this.isSearch = true;
       this.productsFilter = await this.productSrv.handleFilterProductByName(keySearch);
+      console.log(this.productsFilter)
     } else {
       this.isSearch = false;
     }

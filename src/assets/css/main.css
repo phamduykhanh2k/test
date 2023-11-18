@@ -2649,7 +2649,7 @@ tr.total-data td strong {
   font-weight: 500;
 }
 
-.coupon-form-wrap form p input[type=text] {
+.coupon-form-wrap p input[type=text] {
   border: 1px solid #ddd;
   color: #051922;
   padding: 15px;

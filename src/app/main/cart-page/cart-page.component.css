@@ -14,3 +14,12 @@
     width: 120px;
     padding: 10px;
 }
+
+.coupon-form-wrap .card .card-body i:hover {
+    cursor: pointer;
+}
+
+.coupon-form-wrap .voucher-image {
+    max-width: max-content;
+    width: 40px;
+}

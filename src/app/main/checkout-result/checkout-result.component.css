@@ -1,0 +1,17 @@
+.btn-first {
+    background-color: #007bff;
+}
+
+.btn-first:hover {
+    background-color: #007bff;
+}
+
+.btn-second:hover {
+    background-color: #F28123;
+}
+
+.btn-second:hover,
+.btn-first:hover {
+    opacity: 0.8;
+    color: white;
+}

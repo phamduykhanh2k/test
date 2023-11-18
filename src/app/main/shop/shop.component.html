@@ -38,9 +38,12 @@
                     </div>
                     <h3>{{item.name}}</h3>
                     <p class="product-price"><span>Giá theo Kg</span> {{item.price | currency: 'VND'}} </p>
-                    <a (click)="singleAddToCart(item)" class="cart-btn"><i class="fas fa-shopping-cart"></i> Thêm vào
+                    <a *ngIf="item.quantity > 0" (click)="singleAddToCart(item)" class="cart-btn"><i
+                            class="fas fa-shopping-cart"></i> Thêm vào
                         giỏ
                         hàng</a>
+                    <span *ngIf="item.quantity <= 0" class="badge" style="color: red; font-size: 1.4rem;">Hết
+                        hàng</span>
                 </div>
             </div>
         </div>

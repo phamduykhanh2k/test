@@ -22,18 +22,25 @@ export class CategoryService {
   ) { }
 
   getAllCategory = async () => {
-    const categories = await this.observableSrv.getAll(this.schemaName);
+    const result = await this.observableSrv.getAll(this.schemaName);
 
-    this.categories = categories;
-    this.categoriesEmit.emit(this.categories);
+    if (result && result.EC === 0) {
+      this.categories = result.data;
+      this.categoriesEmit.emit(this.categories);
+    }
+
+
   }
 
   createCategory = async (data: FormGroup): Promise<boolean> => {
-    const category = data.value as Category;
+    const category = {
+      name: data.value.name,
+      description: data.value.description
+    };
     const result = await this.observableSrv.post(this.schemaName, category);
 
-    if (result) {
-      this.categories.push(result);
+    if (result && result.EC === 0) {
+      this.categories.push(result.data);
       this.nzMessageService.success('Thêm thành công');
       return true;
     }
@@ -46,11 +53,12 @@ export class CategoryService {
     const category = data.value;
     const result = await this.observableSrv.update(this.schemaName, category);
 
-    if (result.modifiedCount > 0) {
+    if (result && result.EC === 0 && result.data.modifiedCount > 0) {
       const findIndex = this.categories.findIndex(item => item._id === category._id);
 
       this.categories[findIndex] = category;
       this.nzMessageService.success('Cập nhật thành công');
+      this.getAllCategory();
 
       return true;
     }
@@ -62,10 +70,10 @@ export class CategoryService {
   deleteCategory = async (_id: string) => {
     const result = await this.observableSrv.delete(this.schemaName, _id);
 
-    if (result.modifiedCount > 0) {
+    if (result && result.EC === 0 && result.data.modifiedCount > 0) {
       const findIndex = this.categories.findIndex(item => item._id === _id);
 
-      this.categories.splice(findIndex);
+      this.categories.splice(findIndex, 1);
       this.nzMessageService.success('Xóa thành công');
 
       return true;

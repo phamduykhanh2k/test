@@ -1,70 +1,63 @@
 <div class="orders">
-    <h2 class="setting-title text-center">Lịch sử giao dịch</h2>
+    <h2 class="setting-title text-center">Lịch sử đơn hàng</h2>
     <h3 class="setting-subtitle">Đơn hàng của bạn: {{orders.length}} đơn hàng</h3>
-    <div class="container order mt-3" *ngFor="let item of orders | paginate: {itemsPerPage, currentPage}">
-        <a routerLink="/orders/{{item._id}}">
-            <div class="row align-items-center order-header">
-                <div class="col-10">
-                    <p class="order-title">#{{item._id}}</p>
-                    <p class="order-date">{{item.createdAt | date: 'dd-MM-yyyy'}}</p>
-                </div>
-                <div class="col-2" *ngIf="item.status === 'Chờ xác nhận'">
-                    <span class="order-status p-2 rounded-pill"
-                        style="color: orange; background-color: white; font-weight: 600;">{{item.status}}</span>
-                </div>
-                <div class="col-2" *ngIf="item.status === 'Đã xác nhận'">
-                    <span class="order-status p-2 rounded-pill"
-                        style="color: green; background-color: white; font-weight: 600;">{{item.status}}</span>
-                </div>
-                <div class="col-2" *ngIf="item.status === 'Hủy đơn hàng'">
-                    <span class="order-status p-2 rounded-pill"
-                        style="color: red; background-color: white; font-weight: 600;">{{item.status}}</span>
-                </div>
-            </div>
-        </a>
-
-        <div class="row order-body" *ngFor="let cart of item.cart">
-            <div class="col-1 order-image">
-                <img src="{{cart.product.image}}" alt="Ảnh sản phẩm" srcset="">
-            </div>
-
-            <div class="col-9">
-                <p class="order-name">{{cart.product.name}}</p>
-                <p class="order-price">{{cart.product.price | currency: 'VND'}}</p>
-            </div>
-
-            <div class="col-2" *ngIf="item.status === 'Đã xác nhận'">
-                <button (click)="showModal()" class="btn btn-dark rounded-pill">Đánh giá sản phẩm</button>
-            </div>
-
-
-            <nz-modal [(nzVisible)]="isVisible" nzTitle="Đánh giá của bạn" [nzContent]="modalContent"
-                [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
-
-                <ng-template #modalContent>
-                    <strong class="mr-4">Đánh giá</strong>
-                    <nz-rate [(ngModel)]="score" [nzTooltips]="tooltips"></nz-rate>
-                    <span *ngIf="score" class="ant-rate-text">{{ score ? tooltips[score - 1] : '' }}</span>
-                    <div class="comment mt-3">
-                        <strong>Bình luận:</strong>
-                        <nz-comment>
-                            <nz-comment-content>
-                                <textarea [(ngModel)]="comment" nz-input rows="4"></textarea>
-                            </nz-comment-content>
-                        </nz-comment>
+    <div class="orders-body">
+        <div class="container order mt-3" *ngFor="let item of orders | paginate: {itemsPerPage, currentPage}">
+            <a routerLink="/orders/{{item._id}}">
+                <div class="row align-items-center order-header">
+                    <div class="col-10">
+                        <p class="order-title">#{{item._id}}</p>
+                        <p class="order-date">{{item.createdAt | date: 'dd-MM-yyyy'}}</p>
                     </div>
-                </ng-template>
+                    <div class="col-2" *ngIf="item.status === 'Chờ xác nhận'">
+                        <span class="order-status p-2 rounded-pill"
+                            style="color: orange; background-color: white; font-weight: 600;">{{item.status}}</span>
+                    </div>
+                    <div class="col-2" *ngIf="item.status === 'Chờ thanh toán'">
+                        <span class="order-status p-2 rounded-pill"
+                            style="color: #007bff; background-color: white; font-weight: 600;">{{item.status}}</span>
+                    </div>
+                    <div class="col-2" *ngIf="item.status === 'Hoàn thành'">
+                        <span class="order-status p-2 rounded-pill"
+                            style="color: #28a745; background-color: white; font-weight: 600;">{{item.status}}</span>
+                    </div>
+                    <div class="col-2" *ngIf="item.status === 'Hủy đơn hàng'">
+                        <span class="order-status p-2 rounded-pill"
+                            style="color: red; background-color: white; font-weight: 600;">{{item.status}}</span>
+                    </div>
+                </div>
+            </a>
 
-                <ng-template #modalFooter>
-                    <button (click)="onCreateFeedback(item._id!,cart.product._id!)"
-                        class="btn btn-dark btn-lg w-100 rounded-pill">Đánh giá</button>
-                </ng-template>
-            </nz-modal>
-        </div>
+            <div class="row order-body" *ngFor="let cart of item.cart; let index = index">
+                <div class="col-1 order-image">
+                    <img src="{{cart.product.image}}" alt="Ảnh sản phẩm" srcset="">
+                </div>
 
-        <div class="row order-footer">
-            <p class="order-total">Tổng đơn hàng: </p>
-            <p class="order-total">{{item.totalPrice+"" | currency: 'VND'}}</p>
+                <div class="col-9">
+                    <p class="order-name">{{cart.product.name}}</p>
+                    <p class="order-price">{{cart.product.price | currency: 'VND'}}</p>
+                    <p class="order-price">x {{cart.quantity}}</p>
+                </div>
+
+                <div class="col-2" *ngIf="item.status === 'Hoàn thành' || item.status === 'Đã thanh toán'">
+                    <button (click)="showModal(item._id!, cart.product._id!)" class="btn btn-dark rounded-pill"
+                        style="width: max-content;">Đánh giá
+                        sản
+                        phẩm</button>
+                </div>
+                <div class="col-2" *ngIf="item.status === 'Chờ thanh toán' && index === 0">
+                    <button (click)="onPayment(item)" class="btn btn-success rounded-pill"
+                        style="width: max-content;">Thanh
+                        toán
+                        ví Momo</button>
+                </div>
+
+            </div>
+
+            <div class="row order-footer">
+                <p class="order-total">Tổng đơn hàng: </p>
+                <p class="order-total">{{item.totalPrice+"" | currency: 'VND'}}</p>
+            </div>
         </div>
     </div>
 
@@ -74,4 +67,28 @@
                 class="my-pagination"></pagination-controls>
         </div>
     </div>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Đánh giá của bạn" [nzContent]="modalContent" [nzFooter]="modalFooter"
+        (nzOnCancel)="handleCancel()">
+
+        <ng-template #modalContent>
+            <strong class="mr-4">Đánh giá</strong>
+            <input type="text" style="display: none;" [(ngModel)]="productId">
+            <input type="text" style="display: none;" [(ngModel)]="orderId">
+            <nz-rate [(ngModel)]="score" [nzTooltips]="tooltips"></nz-rate>
+            <span *ngIf="score" class="ant-rate-text">{{ score ? tooltips[score - 1] : '' }}</span>
+            <div class="comment mt-3">
+                <strong>Bình luận:</strong>
+                <nz-comment>
+                    <nz-comment-content>
+                        <textarea [(ngModel)]="comment" nz-input rows="4"></textarea>
+                    </nz-comment-content>
+                </nz-comment>
+            </div>
+        </ng-template>
+
+        <ng-template #modalFooter>
+            <button (click)="onCreateFeedback()" class="btn btn-dark btn-lg w-100 rounded-pill">Đánh
+                giá</button>
+        </ng-template>
+    </nz-modal>
 </div>

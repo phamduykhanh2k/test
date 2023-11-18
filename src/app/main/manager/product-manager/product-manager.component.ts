@@ -27,7 +27,7 @@ export class ProductManagerComponent implements OnInit {
       _id: this.builder.control(''),
       name: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(250)])),
       image: this.builder.control('', Validators.compose([Validators.required, Validators.minLength(10)])),
-      quantity: this.builder.control(0, Validators.compose([Validators.required, Validators.min(1), Validators.max(1000)])),
+      quantity: this.builder.control(0, Validators.compose([Validators.required, Validators.min(1), Validators.max(9999)])),
       price: this.builder.control(0, Validators.compose([Validators.required, Validators.min(500), Validators.maxLength(2000000)])),
       categories: this.builder.control('', Validators.required),
       description: this.builder.control('')
@@ -60,13 +60,13 @@ export class ProductManagerComponent implements OnInit {
 
   getProduct(item: Product) {
     this.productForm.setValue({
-      _id: item._id!,
-      name: item.name,
-      image: item.image,
-      quantity: item.quantity,
-      price: item.price,
+      _id: item._id,
+      name: item.name || '',
+      image: item.image || '',
+      quantity: item.quantity || '',
+      price: item.price || '',
       categories: item.categories._id || '',
-      description: item.description
+      description: item.description || ''
     });
 
     this.formType = 'Edit';

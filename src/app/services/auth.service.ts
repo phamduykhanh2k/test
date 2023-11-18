@@ -45,11 +45,10 @@ export class AuthService {
   handleLogin = async (formLogin: FormGroup) => {
     const data = formLogin.value;
     const result = await this.observableSrv.login(data);
-    console.log(result);
 
-    if (result) {
-      localStorage.setItem('user', JSON.stringify(result.user));
-      this.userSrv.userEmit.emit(result.user);
+    if (result && result.EC === 0) {
+      localStorage.setItem('user', JSON.stringify(result.data.user));
+      this.userSrv.userEmit.emit(result.data.user);
       this.toastr.success('Đăng nhập thành công');
       return true;
     }

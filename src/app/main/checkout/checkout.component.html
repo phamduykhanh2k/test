@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div class="checkout-section mt-150 mb-150">
+<div class="checkout-section mt-5 mb-150">
     <form [formGroup]="checkoutForm" (ngSubmit)="handleCheckOut()">
         <div class="container">
             <div class="row">
@@ -74,27 +74,49 @@
                                     data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="card-details">
-                                            <div class="form-check">
+                                            <div class="form-check d-flex align-items-center">
                                                 <input value="Thanh toán khi nhận hàng" class="form-check-input"
                                                     type="radio" name="paymentMethod" id="flexRadioDefault1"
                                                     formControlName="paymentMethod">
-                                                <label class="form-check-label" for="flexRadioDefault1">
-                                                    Thanh toán khi nhận hàng
-                                                </label>
+                                                <div class="row align-items-center ml-1 w-100">
+                                                    <div class="px-0">
+                                                        <img src="assets/img/cash-on-delivery.png" width="30px" alt="">
+                                                    </div>
+                                                    <div class=" px-0">
+                                                        <label class="form-check-label ml-2" for="flexRadioDefault2">
+                                                            Thanh toán khi nhận hàng
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" disabled
-                                                    id=" flexRadioDefault2" checked>
-                                                <label class="form-check-label" for="flexRadioDefault2">
-                                                    Thanh toán bằng ví điện tử (Đang bảo trì)
-                                                </label>
+                                            <div class="form-check d-flex align-items-center mt-3">
+                                                <input class="form-check-input" value="Thanh toán bằng ví Momo"
+                                                    type="radio" id=" flexRadioDefault2" formControlName="paymentMethod"
+                                                    name="paymentMethod">
+                                                <div class="row align-items-center ml-1 w-100">
+                                                    <div class="px-0">
+                                                        <img src="assets/img/MoMo.png" width="25px" alt="">
+                                                    </div>
+                                                    <div class=" px-0">
+                                                        <label class="form-check-label ml-2" for="flexRadioDefault2">
+                                                            Thanh toán bằng ví Momo
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class=" form-check">
-                                                <input class="form-check-input" type="radio" disabled
-                                                    id="flexRadioDefault2" checked>
-                                                <label class="form-check-label" for="flexRadioDefault3">
-                                                    Thanh toán bằng tài khoản ngân hàng (Đang bảo trì)
-                                                </label>
+                                            <div class="form-check d-flex align-items-center mt-3">
+                                                <input class="form-check-input" value="Thanh toán qua ngân hàng"
+                                                    type="radio" id=" flexRadioDefault2" name="paymentMethod" disabled>
+                                                <div class="row align-items-center ml-1 w-100">
+                                                    <div class="px-0">
+                                                        <img src="assets/img/banking.png" width="30px" alt="">
+                                                    </div>
+                                                    <div class=" px-0">
+                                                        <label class="form-check-label ml-2" for="flexRadioDefault2">
+                                                            Thanh toán qua ngân hàng (Bảo trì)
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

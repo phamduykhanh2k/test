@@ -2,9 +2,9 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Feedback } from '../models/data-types';
 import { HttpClient } from '@angular/common/http';
 import { ObservableService } from './observable.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormGroup } from '@angular/forms';
 import { FilterService } from './filter.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +17,15 @@ export class FeedbackService {
 
   constructor(
     private observableSrv: ObservableService,
-    private nzMessageService: NzMessageService,
+    private toastr: ToastrService,
     private filterSrv: FilterService) { }
 
 
   getAllFeedback = async () => {
-    return await this.observableSrv.getAll(this.schemaName);
+    let result = await this.observableSrv.getAll(this.schemaName);
+
+    if (result && result.EC === 0)
+      this.FeedbacksEmit.emit(result.data);
   }
 
   getFeedback = async (id: string) => {
@@ -37,52 +40,49 @@ export class FeedbackService {
 
   getFeedbackByProductId = async (productId: string) => {
     const queryString = 'feedbacks?product=' + productId;
-    return await this.filterSrv.filter(queryString);
+    let result = await this.filterSrv.filter(queryString);
+    if (result && result.EC === 0) {
+      return result.data;
+    }
   }
 
   createFeedback = async (data: any) => {
     const result = await this.observableSrv.post(this.schemaName, data);
 
-    if (result) {
-      this.Feedbacks.push(result);
-      this.nzMessageService.success('Thêm thành công!');
+    if (result && result.EC === 0) {
+      this.Feedbacks.push(result.data);
+      this.toastr.success('Thêm thành công!');
       return true;
     }
 
-    this.nzMessageService.error('Thêm thất bại!');
+    this.toastr.error('Thêm thất bại!');
     return false;
   }
 
-  updateFeedback = async (FeedbackForm: FormGroup) => {
-    // const data = FeedbackForm.value;
-    // const result = await this.observableSrv.update(this.schemaName, data);
+  updateFeedback = async (data: any) => {
+    const result = await this.observableSrv.update(this.schemaName, data);
 
-    // if (result.modifiedCount > 0) {
-    //   const findIndex = this.Feedbacks.findIndex(item => item._id === data._id);
+    if (result && result.EC === 0 && result.data.modifiedCount > 0) {
+      return true;
+    }
 
-    //   this.Feedbacks[findIndex] = data;
-    //   this.nzMessageService.success('Cập nhật thành công');
-
-    //   return true;
-    // }
-
-    // this.nzMessageService.error('Cập nhật thất bại');
-    // return false;
+    this.toastr.error('Thêm thất bại!');
+    return false;
   }
 
   deleteFeedback = async (_id: string) => {
     // const result = await this.observableSrv.delete(this.schemaName, _id);
 
-    // if (result.modifiedCount > 0) {
+    // if (result && result.EC === 0 && result.data.modifiedCount > 0) {
     //   const findIndex = this.Feedbacks.findIndex(item => item._id! === _id);
 
     //   this.Feedbacks.splice(findIndex);
-    //   this.nzMessageService.success('Xóa thành công');
+    //   this.toastr.success('Xóa thành công');
 
     //   return true;
     // }
 
-    // this.nzMessageService.error('Xóa thất bại');
+    // this.toastr.error('Xóa thất bại');
     // return false;
   }
 }

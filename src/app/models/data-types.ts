@@ -22,6 +22,7 @@ export interface ToTalSumary {
 export interface Order {
     _id?: string,
     userId: string,
+    voucher?: Voucher,
     name: string,
     address: string,
     note: String,
@@ -36,10 +37,24 @@ export interface Order {
 }
 
 export interface Feedback {
+    _id?: string,
     user: User,
     product: Product,
     score: number,
     note: string
+    createdAt: Date,
+    updatedAt: Date
+}
+
+export interface Voucher {
+    _id?: string,
+    code: string,
+    discount: number,
+    quantity: number,
+    expired_date: Date,
+    statusExpired?: string,
+    status: string,
+    description: string,
     createdAt: Date,
     updatedAt: Date
 }

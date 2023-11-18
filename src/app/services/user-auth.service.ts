@@ -26,14 +26,17 @@ export class UserAuthService {
 
   GetAll = async () => {
     const result = await this.observableSrv.getAll(this.schemaName);
-    this.users = result;
-    this.usersEmit.emit(this.users);
+
+    if (result && result.EC === 0) {
+      this.users = result.data;
+      this.usersEmit.emit(this.users);
+    }
   }
 
   updateUser = async (data: any) => {
     const result = await this.observableSrv.update(this.schemaName, data);
 
-    if (result.modifiedCount > 0) {
+    if (result && result.EC === 0 && result.data.modifiedCount > 0) {
       this.message.success('Cập nhật thành công');
       this.GetAll(); // BUG ERROR
       return true;
@@ -47,7 +50,7 @@ export class UserAuthService {
     const _id = user._id;
     const result = await this.observableSrv.delete(this.schemaName, _id!);
 
-    if (result.modifiedCount > 0) {
+    if (result && result.EC === 0 && result.data.modifiedCount > 0) {
       const findIndex = this.users.findIndex(item => item._id === user._id);
 
       if (findIndex !== -1) {

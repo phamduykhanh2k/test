@@ -44,6 +44,18 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { FeedbacksComponent } from './main/settings/feedbacks/feedbacks.component';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { CheckoutResultComponent } from './main/checkout-result/checkout-result.component';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { VoucherManagerComponent } from './main/manager/voucher-manager/voucher-manager.component';
+import { DashboardComponent } from './main/manager/dashboard/dashboard.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { registerLocaleData } from '@angular/common';
+import vi from '@angular/common/locales/vi';
+import { provideNzI18n, vi_VN } from 'ng-zorro-antd/i18n';
+
+registerLocaleData(vi);
 
 @NgModule({
   declarations: [
@@ -74,6 +86,9 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
     OrderDetailComponent,
     CheckoutComponent,
     FeedbacksComponent,
+    CheckoutResultComponent,
+    VoucherManagerComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,13 +108,20 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
     NzModalModule,
     NzRateModule,
     NzCommentModule,
-    NzAvatarModule
+    NzAvatarModule,
+    NzResultModule,
+    NzPopoverModule,
+    NzTabsModule,
+    NzDatePickerModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  }],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    provideNzI18n(vi_VN)
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

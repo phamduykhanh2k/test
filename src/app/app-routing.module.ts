@@ -20,6 +20,9 @@ import { OrderManagerComponent } from './main/manager/order-manager/order-manage
 import { OrderDetailComponent } from './main/order-detail/order-detail.component';
 import { UserManagerComponent } from './main/manager/user-manager/user-manager.component';
 import { FeedbacksComponent } from './main/settings/feedbacks/feedbacks.component';
+import { CheckoutResultComponent } from './main/checkout-result/checkout-result.component';
+import { VoucherManagerComponent } from './main/manager/voucher-manager/voucher-manager.component';
+import { DashboardComponent } from './main/manager/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,7 +31,12 @@ const routes: Routes = [
   { path: 'shop', component: ShopComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
   { path: 'cart', component: CartPageComponent, canActivate: [IsLogin] },
-  { path: 'checkout', component: CheckoutComponent, canActivate: [IsLogin] },
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    canActivate: [IsLogin],
+  },
+  { path: 'checkout-result', component: CheckoutResultComponent, canActivate: [IsLogin] },
   { path: 'contact', component: ContactComponent },
   { path: 'orders/:id', component: OrderDetailComponent, canActivate: [IsLogin] },
   {
@@ -47,11 +55,13 @@ const routes: Routes = [
     component: ManagerComponent,
     canActivate: [IsAdmin],
     children: [
-      { path: '', redirectTo: '/manager/products', pathMatch: 'full' },
+      { path: '', redirectTo: '/manager/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'products', component: ProductManagerComponent },
       { path: 'users', component: UserManagerComponent },
       { path: 'orders', component: OrderManagerComponent },
       { path: 'categories', component: CategoryManagerComponent },
+      { path: 'vouchers', component: VoucherManagerComponent },
     ]
   },
   { path: '**', component: PageNotFoundComponent },

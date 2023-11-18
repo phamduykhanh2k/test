@@ -49,7 +49,6 @@ export class IsLogin {
     if (user)
       return true;
     else {
-      this.toastr.error('Vui lòng đăng nhập', 'Token không hợp lệ');
       this.router.navigate(['authentication'])
       return false;
     }

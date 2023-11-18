@@ -1,4 +1,5 @@
 export interface ServerData {
     EC: number,
-    data: any
+    data: any,
+    errorMessage: string
 }

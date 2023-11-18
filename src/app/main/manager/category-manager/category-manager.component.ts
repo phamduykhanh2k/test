@@ -48,7 +48,7 @@ export class CategoryManagerComponent implements OnInit {
   getCategory(item: Category) {
     this.categoryForm.setValue({
       _id: item._id || '',
-      name: item.name,
+      name: item.name || '',
       description: item.description || ''
     });
     this.formType = 'Edit'

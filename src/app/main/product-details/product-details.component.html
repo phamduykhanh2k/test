@@ -29,11 +29,17 @@
                                 max="100" onKeyPress="if(this.value.length==4) return false;">
                             <span class="stock">Kho: {{product.quantity}} kg</span>
                         </form>
-                        <button class="cart-btn btn btn-primary my-4" type="submit" (click)="addToCart()">
-                            <i class="fas fa-shopping-cart"></i>
-                            <!-- Thêm vào giỏ hàng -->
-                            Thêm vào giỏ hàng
-                        </button>
+                        <div class="my-3">
+                            <button *ngIf="product.quantity > 0" class="cart-btn btn btn-primary" type="submit"
+                                (click)="addToCart()">
+                                <i class="fas fa-shopping-cart"></i>
+                                <!-- Thêm vào giỏ hàng -->
+                                Thêm vào giỏ hàng
+                            </button>
+
+                            <span *ngIf="product.quantity <= 0" class="badge" style="color: red; font-size: 1.4rem;">Hết
+                                hàng</span>
+                        </div>
 
                         <p><strong>Loại sản phẩm: </strong><span
                                 class="badge badge-info">{{product.categories.name}}</span>
